@@ -1,0 +1,1 @@
+export const assets = [{url: "./posible_protagonista.png", name: "myProta"}];
