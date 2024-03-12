@@ -4,7 +4,7 @@ export const assets = [
     {url: "./Close_down.png", name: "closeDown"},
     {url: "./Close_over.png", name: "closeOver"},
     {url: "./Leaderboard_def.png", name: "leaderboardDef"},
-    {url: "./LeaderBoard_down.png", name: "leaderboardDown"},
+    {url: "./Leaderboard_down.png", name: "leaderboardDown"},
     {url: "./Leaderboard_over.png", name: "leaderboardOver"},
     {url: "./Play_def.png", name: "playDef"},
     {url: "./Play_down.png", name: "playDown"},
