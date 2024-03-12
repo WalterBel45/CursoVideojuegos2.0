@@ -1,1 +1,21 @@
-export const assets = [{url: "./posible_protagonista.png", name: "myProta"}];
+export const assets = [
+    {url: "./posible_protagonista.png", name: "myProta"},
+    {url: "./Close_def.png", name: "closeDef"},
+    {url: "./Close_down.png", name: "closeDown"},
+    {url: "./Close_over.png", name: "closeOver"},
+    {url: "./Leaderboard_def.png", name: "leaderboardDef"},
+    {url: "./LeaderBoard_down.png", name: "leaderboardDown"},
+    {url: "./Leaderboard_over.png", name: "leaderboardOver"},
+    {url: "./Play_def.png", name: "playDef"},
+    {url: "./Play_down.png", name: "playDown"},
+    {url: "./Play_over.png", name: "playOver"},
+    {url: "./SaveReplay_def.png", name: "saveReplayDef"},
+    {url: "./SaveReplay_down.png", name: "saveReplayDown"},
+    {url: "./SaveReplay_over.png", name: "saveReplayOver"},
+    {url: "./panel-border-005.png", name: "panelBorder"},
+    {url: "./divider-fade-003.png", name: "dividerLine"},
+    {url: "./panelScore.png", name: "scorePanel"},
+    {url: "./Star_def.png", name: "starDef"},
+    {url: "./Star_down.png", name: "starDown"},
+    {url: "./Star_over.png", name: "starOver"},
+];

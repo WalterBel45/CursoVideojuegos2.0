@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import { Protagonista } from "./Protagnista";
+import { Protagonista } from "../game/Protagnista";
 
 export class Scene extends Container {
 
