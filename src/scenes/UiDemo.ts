@@ -1,9 +1,14 @@
 import { Container, NineSlicePlane, Sprite, Text, Texture } from "pixi.js";
 import { Button } from "../ui/button";
+import { Keyboard } from "../utils/keyboard";
 
 export class UIDemo extends Container {
 
     private buttonMouseClose: Button;
+    private buttonMouseLeaderboard: Button;
+    private buttonMouseSaveReply: Button;
+    private buttonPlay: Button;
+    private lastKeyPressed: Text;
 
     constructor() {
         super();
@@ -23,29 +28,39 @@ export class UIDemo extends Container {
         this.buttonMouseClose = new Button(Texture.from("closeDef"), 
         Texture.from("closeDown"), 
         Texture.from("closeOver"),
-        this.onButtonClick);
-        
+        );
+        this.buttonMouseClose.on("buttonClick", this.onButtonClick, this);
         this.buttonMouseClose.x = background.width / 2 + 100;
         this.buttonMouseClose.y = this.buttonMouseClose.height + 350;
         dialog.addChild(this.buttonMouseClose);
 
-        const buttonMouseLeaderboard = Sprite.from("leaderboardDef");
-        buttonMouseLeaderboard.scale.set(1.5);
-        buttonMouseLeaderboard.x = this.buttonMouseClose.x + 80;
-        buttonMouseLeaderboard.y = this.buttonMouseClose.y;
-        dialog.addChild(buttonMouseLeaderboard);
+        this.buttonMouseLeaderboard = new Button(Texture.from("leaderboardDef"), 
+        Texture.from("leaderboardDown"), 
+        Texture.from("leaderboardOver"),
+        );
+        this.buttonMouseLeaderboard.on("buttonClick", this.onButtonClick, this);
+        this.buttonMouseLeaderboard.x = this.buttonMouseClose.x + 80;
+        this.buttonMouseLeaderboard.y = this.buttonMouseClose.y;
+        dialog.addChild(this.buttonMouseLeaderboard);
 
-        const buttonMouseSaveReply = Sprite.from("saveReplayDef");
-        buttonMouseSaveReply.scale.set(1.5);
-        buttonMouseSaveReply.x = buttonMouseLeaderboard.x + 80;
-        buttonMouseSaveReply.y = this.buttonMouseClose.y;
-        dialog.addChild(buttonMouseSaveReply);
+        this.buttonMouseSaveReply = new Button(Texture.from("saveReplayDef"), 
+        Texture.from("saveReplayDown"), 
+        Texture.from("saveReplayOver"),
+        );
+        this.buttonMouseSaveReply.on("buttonClick", this.onButtonClick, this);
+        this.buttonMouseSaveReply.x = this.buttonMouseLeaderboard.x + 80;
+        this.buttonMouseSaveReply.y = this.buttonMouseClose.y;
+        dialog.addChild(this.buttonMouseSaveReply);
 
-        const buttonPlay = Sprite.from("playDef");
-        buttonPlay.scale.set(2.5);
-        buttonPlay.x = buttonMouseSaveReply.x + 125;
-        buttonPlay.y = this.buttonMouseClose.y - 25;
-        dialog.addChild(buttonPlay);
+        this.buttonPlay = new Button(Texture.from("playDef"), 
+        Texture.from("playDown"), 
+        Texture.from("playOver"),
+        );
+        this.buttonPlay.on("buttonClick", this.onButtonClick, this);
+        this.buttonPlay.x = this.buttonMouseSaveReply.x + 125;
+        this.buttonPlay.y = this.buttonMouseClose.y - 25;
+        this.buttonPlay.scale.set(1.5);
+        dialog.addChild(this.buttonPlay);
 
 
         //Panel de puntuacion y estrellas conseguidas
@@ -75,27 +90,54 @@ export class UIDemo extends Container {
         allStars.y = scorePanel.y + 60;
 
 
-        const lastKeyPressed = new Text("Score : 100000", { fontSize: 30 });
+        this.lastKeyPressed = new Text("Score : 100000", { fontSize: 30 });
 
 
         const scorePanelvisual = new NineSlicePlane(Texture.from("scorePanel"), 35, 35, 35, 35);
         scorePanelvisual.width = 400;
         scorePanelvisual.height = 100;
 
-        lastKeyPressed.x = scorePanelvisual.width / 2 - 100;
-        lastKeyPressed.y = scorePanelvisual.height / 2 - 15;
+        this.lastKeyPressed.x = scorePanelvisual.width / 2 - 100;
+        this.lastKeyPressed.y = scorePanelvisual.height / 2 - 15;
 
         scorePanel.x = this.buttonMouseClose.x + 100;
         scorePanel.y = background.width / 2 + 60;
 
 
         scorePanel.addChild(scorePanelvisual);
-        scorePanel.addChild(lastKeyPressed);
+        scorePanel.addChild(this.lastKeyPressed);
+
+        // Teclado
+        /*document.addEventListener("keydown", this.onKeyDown.bind(this));
+        document.addEventListener("keyup", this.onKeyUp.bind(this));*/
 
         this.addChild(dialog, scorePanel, allStars);
+
+        Keyboard.down.on("KeyB", this.onKeyB, this);
+        Keyboard.up.on("KeyB", this.onKeyBUp, this);
     }
 
+    /*private onKeyDown(e : KeyboardEvent) : void {
+        console.log("key pressed!", e.code);
+        this.lastKeyPressed.text = e.code;
+        if (e.code == "KeyA") {
+            console.log("apretamos la A!");
+        }
+    }*/
+
+    /*private onKeyUp(e : KeyboardEvent) : void {
+        console.log("key released!", e.code); 
+    } */
+    
     private onButtonClick(): void {
-        console.log("my new buttton clicked!");
+        console.log("my new buttton clicked!", Keyboard.state.get("KeyA"), this);
+    }
+
+    private onKeyB() : void {
+        console.log("aprete la B", this);
+    }
+
+    private onKeyBUp() : void {
+        console.log("solte la B", this);
     }
 }
