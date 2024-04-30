@@ -1,8 +1,7 @@
-import { AnimatedSprite, Container, Texture } from "pixi.js";
+import { AnimatedSprite, Container, Texture, Ticker } from "pixi.js";
+import { SceneBase } from "../utils/SceneBase";
 
-
-export class Scene extends Container {
-
+export class ThickerScene extends SceneBase {
 private goodWitchAnimated: AnimatedSprite;
 
     constructor() {
@@ -27,15 +26,13 @@ private goodWitchAnimated: AnimatedSprite;
             Texture.from("goodwitchrun15"),
             Texture.from("goodwitchrun16")
             ],
-            true
+            false
     );
 
     this.goodWitchAnimated.scale.set(3);
-    this.goodWitchAnimated.animationSpeed = 0.3;
+    this.goodWitchAnimated.animationSpeed = 0.4;
     this.goodWitchAnimated.play();
     this.addChild(this.goodWitchAnimated);
-
-    
 }
-     
+    
 }
