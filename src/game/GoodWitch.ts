@@ -90,7 +90,7 @@ public override update(deltaTime: number) {
 
     if (Keyboard.state.get("Space") && this.canJump) {
         this.canJump = false;
-        this.physWitch.speed.y = -500;
+        this.physWitch.speed.y = -800;
     }
 
 
