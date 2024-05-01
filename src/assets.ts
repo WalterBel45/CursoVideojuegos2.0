@@ -32,4 +32,7 @@ export const assets = [
     {url: "./good witch/RunAnimation14.png", name: "goodwitchrun14"},
     {url: "./good witch/RunAnimation15.png", name: "goodwitchrun15"},
     {url: "./good witch/RunAnimation16.png", name: "goodwitchrun16"},
+    {url: "./backgrounds/background1.png", name:"background1"},
+    {url: "./platforms/platform1.png", name:"platform1"},
+
 ]

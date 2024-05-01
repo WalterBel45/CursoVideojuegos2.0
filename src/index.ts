@@ -1,16 +1,19 @@
-import { Application, Loader } from 'pixi.js'
+import { Application, Loader, Ticker } from 'pixi.js'
 import { assets } from './assets';
 import { Keyboard } from './utils/keyboard';
 //import { Scene } from './scenes/Scene';
 import { ThickerScene } from './scenes/ThickerScene';
+
+export const WIDTH = 1920;
+export const HEIGHT = 1080;
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
 	resolution: window.devicePixelRatio || 1,
 	autoDensity: true,
 	backgroundColor: 0x6495ed,
-	width: 1280,
-	height: 720
+	width: WIDTH,
+	height: HEIGHT
 });
 
 Keyboard.initialize();
@@ -43,7 +46,9 @@ Loader.shared.add(assets);
 Loader.shared.onComplete.add(() => {
 	const myScene = new ThickerScene();
 	app.stage.addChild(myScene);
-	myScene.update
+	Ticker.shared.add(function (_deltaFrame){
+		myScene.update(Ticker.shared.deltaMS);
+	})
 
 
 

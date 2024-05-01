@@ -1,38 +1,36 @@
-import { AnimatedSprite, Container, Texture, Ticker } from "pixi.js";
-import { SceneBase } from "../utils/SceneBase";
+import { Container, Sprite } from "pixi.js";
+import { IUpdateable } from "../utils/IUpdateable";
+import { GoodWitch } from "../game/GoodWitch";
 
-export class ThickerScene extends SceneBase {
-private goodWitchAnimated: AnimatedSprite;
+export class ThickerScene extends Container implements IUpdateable {
+
+    private goodWitch: GoodWitch;
+    
 
     constructor() {
         super();
 
-    this.goodWitchAnimated = new AnimatedSprite(
-        [
-            Texture.from("goodwitchrun1"),
-            Texture.from("goodwitchrun2"),
-            Texture.from("goodwitchrun3"),
-            Texture.from("goodwitchrun4"),
-            Texture.from("goodwitchrun5"),
-            Texture.from("goodwitchrun6"),
-            Texture.from("goodwitchrun7"),
-            Texture.from("goodwitchrun8"),
-            Texture.from("goodwitchrun9"),
-            Texture.from("goodwitchrun10"),
-            Texture.from("goodwitchrun11"),
-            Texture.from("goodwitchrun12"),
-            Texture.from("goodwitchrun13"),
-            Texture.from("goodwitchrun14"),
-            Texture.from("goodwitchrun15"),
-            Texture.from("goodwitchrun16")
-            ],
-            false
-    );
+        const background: Sprite = Sprite.from("background1");
+        const platform1: Sprite = Sprite.from("platform1");
+        const platform2: Sprite = Sprite.from("platform1");
+        
+        platform1.position.set(650, 700);
+        platform2.anchor.set(1000, 700)
 
-    this.goodWitchAnimated.scale.set(3);
-    this.goodWitchAnimated.animationSpeed = 0.4;
-    this.goodWitchAnimated.play();
-    this.addChild(this.goodWitchAnimated);
-}
+        
+
+
+        
+        this.addChild(background, platform1, platform2);
+        this.goodWitch = new GoodWitch();
+        this.addChild(this.goodWitch);
+        
+    }
+
     
+    public update(deltaTime: number) {
+        this.goodWitch.update(deltaTime);
+        
+    
+}
 }
