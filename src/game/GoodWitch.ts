@@ -7,14 +7,15 @@ export class GoodWitch extends PhysicsContainer {
 
     private static readonly GRAVITY = 750;
     private static readonly MOVE_SPEED = 350;
-    private goodWitchAnimated: AnimatedSprite;
+    private goodWitchAnimatedRun: AnimatedSprite;
     private physWitch: PhysicsContainer;
     private canJump = true;
+    private goodWitchAnimatedJump: AnimatedSprite;
 
     constructor() {
         super();
 
-    this.goodWitchAnimated = new AnimatedSprite(
+    this.goodWitchAnimatedRun = new AnimatedSprite(
         [
             Texture.from("goodwitchrun1"),
             Texture.from("goodwitchrun2"),
@@ -36,10 +37,35 @@ export class GoodWitch extends PhysicsContainer {
             false
     );
 
-    this.goodWitchAnimated.scale.set(3);
-    this.goodWitchAnimated.animationSpeed = 0.03;
-    this.goodWitchAnimated.play();
-    this.goodWitchAnimated.anchor.set(0.5, 1);
+    this.goodWitchAnimatedJump = new AnimatedSprite(
+        [
+            Texture.from("jumpAnimation1"),
+            Texture.from("jumpAnimation2"),
+            Texture.from("jumpAnimation3"),
+            Texture.from("jumpAnimation4"),
+            Texture.from("jumpAnimation5"),
+            Texture.from("jumpAnimation6"),
+            Texture.from("jumpAnimation7"),
+            Texture.from("jumpAnimation8"),
+            Texture.from("jumpAnimation9"),
+            Texture.from("jumpAnimation10"),
+            Texture.from("jumpAnimation11"),
+            Texture.from("jumpAnimation12"),
+            Texture.from("jumpAnimation13"),
+            Texture.from("jumpAnimation14"),
+            Texture.from("jumpAnimation15"),
+            ],
+            false
+    );
+
+    this.goodWitchAnimatedRun.scale.set(3);
+    this.goodWitchAnimatedRun.animationSpeed = 0.03;
+    this.goodWitchAnimatedRun.play();
+    this.goodWitchAnimatedRun.anchor.set(0.5, 1);
+
+    this.goodWitchAnimatedJump.scale.set(3);
+    this.goodWitchAnimatedJump.animationSpeed = 0.005;
+    this.goodWitchAnimatedJump.anchor.set(0.5, 1);
 
     this.physWitch = new PhysicsContainer();
     this.physWitch.speed.x = 400;
@@ -54,7 +80,7 @@ export class GoodWitch extends PhysicsContainer {
     auxZero.endFill();
 
     this.addChild(this.physWitch);
-    this.physWitch.addChild(this.goodWitchAnimated);
+    this.physWitch.addChild(this.goodWitchAnimatedRun);
     this.physWitch.addChild(auxZero);
 
     
@@ -63,7 +89,8 @@ export class GoodWitch extends PhysicsContainer {
 public override update(deltaTime: number) {
     const deltaTim = deltaTime / 1000;
     this.physWitch.update(deltaTim);
-    this.goodWitchAnimated.update(deltaTime);
+    this.goodWitchAnimatedRun.update(deltaTime);
+    this.goodWitchAnimatedJump.update(deltaTime);
   
     if (this.physWitch.x > WIDTH) {
         this.physWitch.x = WIDTH;
@@ -74,6 +101,8 @@ public override update(deltaTime: number) {
     }
     if (this.physWitch.y > HEIGHT) {
         this.physWitch.y = HEIGHT;
+        this.physWitch.removeChild(this.goodWitchAnimatedJump);
+        this.physWitch.addChild(this.goodWitchAnimatedRun);
         this.canJump = true;
         
     }
@@ -91,6 +120,10 @@ public override update(deltaTime: number) {
     if (Keyboard.state.get("Space") && this.canJump) {
         this.canJump = false;
         this.physWitch.speed.y = -800;
+        this.physWitch.removeChild(this.goodWitchAnimatedRun);
+        this.physWitch.addChild(this.goodWitchAnimatedJump);
+        this.goodWitchAnimatedJump.play();
+        
     }
 
 
