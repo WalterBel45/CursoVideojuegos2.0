@@ -46,8 +46,8 @@ Loader.shared.add(assets);
 Loader.shared.onComplete.add(() => {
 	const myScene = new ThickerScene();
 	app.stage.addChild(myScene);
-	Ticker.shared.add(function (_deltaFrame){
-		myScene.update(Ticker.shared.deltaMS);
+	Ticker.shared.add(function (deltaFrame) {
+		myScene.update(Ticker.shared.deltaMS, deltaFrame);
 	})
 
 
