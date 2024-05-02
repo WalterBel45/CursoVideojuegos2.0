@@ -1,9 +1,10 @@
-import { AnimatedSprite, Graphics, Texture } from "pixi.js";
+import { AnimatedSprite, Graphics, Rectangle, Texture } from "pixi.js";
 import { PhysicsContainer } from "./PhysicsContainer";
 import { HEIGHT, WIDTH } from "..";
 import { Keyboard } from "../utils/keyboard";
+import { IHitbox } from "../utils/IHitbox";
 
-export class GoodWitch extends PhysicsContainer {
+export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     private static readonly GRAVITY = 750;
     private static readonly MOVE_SPEED = 350;
@@ -11,6 +12,7 @@ export class GoodWitch extends PhysicsContainer {
     private physWitch: PhysicsContainer;
     private canJump = true;
     private goodWitchAnimatedJump: AnimatedSprite;
+    private hitbox: Graphics;
 
     constructor() {
         super();
@@ -64,8 +66,9 @@ export class GoodWitch extends PhysicsContainer {
     this.goodWitchAnimatedRun.anchor.set(0.5, 1);
 
     this.goodWitchAnimatedJump.scale.set(3);
-    this.goodWitchAnimatedJump.animationSpeed = 0.005;
+    this.goodWitchAnimatedJump.animationSpeed = 0.0099;
     this.goodWitchAnimatedJump.anchor.set(0.5, 1);
+    
 
     this.physWitch = new PhysicsContainer();
     this.physWitch.speed.x = 400;
@@ -79,12 +82,25 @@ export class GoodWitch extends PhysicsContainer {
     auxZero.drawCircle(0,0,10);
     auxZero.endFill();
 
+    this.hitbox = new Graphics();
+    this.hitbox.beginFill(0xFF00FF, 0.3);
+    this.hitbox.drawRect(0, 0, 125, 125);
+    this.hitbox.endFill();
+    this.hitbox.x = -90;
+    this.hitbox.y = -120;
+
+    
+
     this.addChild(this.physWitch);
     this.physWitch.addChild(this.goodWitchAnimatedRun);
     this.physWitch.addChild(auxZero);
+    this.physWitch.addChild(this.hitbox);
 
     
 }
+    getHitbox(): Rectangle {
+        return this.hitbox.getBounds();
+    }
 
 public override update(deltaTime: number) {
     const deltaTim = deltaTime / 1000;
@@ -125,9 +141,8 @@ public override update(deltaTime: number) {
         this.goodWitchAnimatedJump.play();
         
     }
-
-
 }
+
 
     
 }
