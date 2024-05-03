@@ -12,6 +12,7 @@ export class ThickerScene extends Container implements IUpdateable {
     private world: Container;
     private background: TilingSprite;
     private gameSpeed: number = 100;
+    private timePassed: number = 0;
 
     constructor() {
         super();
@@ -60,6 +61,20 @@ export class ThickerScene extends Container implements IUpdateable {
 
 
     public update(deltaTime: number, _deltaFrame: number): void {
+        
+        this.timePassed += deltaTime;
+
+        if (this.timePassed > 2000) {
+            this.gameSpeed += 10;
+            this.timePassed = 0;
+        const platform1 = new Platform();
+        platform1.position.set(WIDTH + 950, Math.random() * 1080);
+        platform1.scale.set(5, 2);
+        this.platforms.push(platform1);
+        this.world.addChild(platform1);
+
+        }
+        
         this.goodWitch.update(deltaTime);
 
         for (let platform of this.platforms) {
@@ -71,7 +86,12 @@ export class ThickerScene extends Container implements IUpdateable {
                 this.goodWitch.separate(overlap, platform.position);
 
             }
+            if (platform.getHitbox().right < 0) {
+                platform.destroy();
+            }
+
         }
+        this.platforms = this.platforms.filter((elem) => !elem.destroyed);
 
 
         if (this.goodWitch.x > WIDTH) {
@@ -81,6 +101,7 @@ export class ThickerScene extends Container implements IUpdateable {
 
         } else if (this.goodWitch.x < 0) {
             this.goodWitch.x = 0;
+            
 
 
         }
@@ -90,8 +111,8 @@ export class ThickerScene extends Container implements IUpdateable {
             this.goodWitch.canJump = true;
         }
 
-        this.world.x = -this.goodWitch.x * this.worldTransform.a + WIDTH/4;
-        this.background.tilePosition.x = this.world.x * 0.5;
+        this.world.x = -this.goodWitch.x * this.worldTransform.a + WIDTH / 7;
+        this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000; 
     }
 
     

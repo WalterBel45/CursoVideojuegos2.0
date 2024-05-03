@@ -14,6 +14,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     public canJump = true;
     //private goodWitchAnimatedJump: AnimatedSprite;
     private hitbox: Graphics;
+    private static readonly JUMP_SPEED = 600;
 
     constructor() {
         super();
@@ -118,15 +119,16 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.speed.x = 0;
         }
 
-        /*if (Keyboard.state.get("Space")) {
-            this.jump();
-
-        } */
+        if (Keyboard.state.get("KeyS")) {
+            this.acceleration.y = GoodWitch.GRAVITY * 5;
+        } else {
+            this.acceleration.y = GoodWitch.GRAVITY;
+        }
     }
     private jump() {
         if (this.canJump) {
             this.canJump = false;
-            this.speed.y = -500;
+            this.speed.y = -GoodWitch.JUMP_SPEED;
         }
     }
 
