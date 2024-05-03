@@ -1,7 +1,8 @@
-import { Container, Graphics, NineSlicePlane, Rectangle, Texture } from "pixi.js";
+import {Graphics, NineSlicePlane, Rectangle, Texture } from "pixi.js";
 import { IHitbox } from "../utils/IHitbox";
+import { PhysicsContainer } from "./PhysicsContainer";
 
-export class Platform extends Container implements IHitbox {
+export class Platform extends PhysicsContainer implements IHitbox {
     private hitbox: Graphics;
     
     constructor() {

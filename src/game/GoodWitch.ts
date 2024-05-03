@@ -1,4 +1,4 @@
-import { AnimatedSprite, Graphics, Rectangle, Texture } from "pixi.js";
+import { AnimatedSprite, Graphics, ObservablePoint, Rectangle, Texture } from "pixi.js";
 import { PhysicsContainer } from "./PhysicsContainer";
 //import { HEIGHT, WIDTH } from "..";
 //import { Keyboard } from "../utils/keyboard";
@@ -6,6 +6,7 @@ import { IHitbox } from "../utils/IHitbox";
 import { Keyboard } from "../utils/keyboard";
 
 export class GoodWitch extends PhysicsContainer implements IHitbox {
+
 
     private static readonly GRAVITY = 350;
     private static readonly MOVE_SPEED = 350;
@@ -98,7 +99,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         super.destroy(options);
         Keyboard.down.off("Space", this.jump);
     }
-    
+
     getHitbox(): Rectangle {
         return this.hitbox.getBounds();
     }
@@ -126,6 +127,31 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         if (this.canJump) {
             this.canJump = false;
             this.speed.y = -500;
+        }
+    }
+
+    public separate(overlap: Rectangle, platform: ObservablePoint<any>) {
+        if (overlap.width < overlap.height) {
+
+            if (this.x > platform.x) {
+                this.x += overlap.width;
+            } else if (this.x < platform.x) {
+                this.x -= overlap.width;
+
+            }
+
+        } else {
+
+            if (this.y > platform.y) {
+                this.y -= overlap.height;
+                this.speed.y = 0;
+                this.canJump = true;
+
+
+            } else if (this.y < platform.y) {
+                this.y += overlap.height;
+            }
+
         }
     }
 }
