@@ -94,24 +94,7 @@ export class ThickerScene extends Container implements IUpdateable {
         this.platforms = this.platforms.filter((elem) => !elem.destroyed);
 
 
-        if (this.goodWitch.x > WIDTH) {
-            //this.goodWitch.x = WIDTH;
-
-
-
-        } else if (this.goodWitch.x < 0) {
-            this.goodWitch.x = 0;
-            
-
-
-        }
-        if (this.goodWitch.y > HEIGHT) {
-            this.goodWitch.y = HEIGHT;
-            this.goodWitch.speed.y = 0;
-            this.goodWitch.canJump = true;
-        }
-
-        this.world.x = -this.goodWitch.x * this.worldTransform.a + WIDTH / 7;
+        //this.world.x = -this.goodWitch.x * this.worldTransform.a + WIDTH / 7;
         this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000; 
     }
 

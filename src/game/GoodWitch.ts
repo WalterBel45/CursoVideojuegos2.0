@@ -4,6 +4,7 @@ import { PhysicsContainer } from "./PhysicsContainer";
 //import { Keyboard } from "../utils/keyboard";
 import { IHitbox } from "../utils/IHitbox";
 import { Keyboard } from "../utils/keyboard";
+import { HEIGHT, WIDTH } from "..";
 
 export class GoodWitch extends PhysicsContainer implements IHitbox {
 
@@ -12,9 +13,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private static readonly MOVE_SPEED = 350;
     private goodWitchAnimatedRun: AnimatedSprite;
     public canJump = true;
-    //private goodWitchAnimatedJump: AnimatedSprite;
+    private goodWitchAnimatedJump: AnimatedSprite;
     private hitbox: Graphics;
     private static readonly JUMP_SPEED = 600;
+    private isJumping = false;
 
     constructor() {
         super();
@@ -41,7 +43,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             false
         );
 
-        /*this.goodWitchAnimatedJump = new AnimatedSprite(
+        this.goodWitchAnimatedJump = new AnimatedSprite(
             [
                 Texture.from("jumpAnimation1"),
                 Texture.from("jumpAnimation2"),
@@ -58,14 +60,21 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
                 Texture.from("jumpAnimation13"),
                 Texture.from("jumpAnimation14"),
                 Texture.from("jumpAnimation15"),
-                ],
-                false
-        ); */
+            ],
+            false
+        );
 
         this.goodWitchAnimatedRun.scale.set(3);
         this.goodWitchAnimatedRun.animationSpeed = 0.3;
         this.goodWitchAnimatedRun.play();
         this.goodWitchAnimatedRun.anchor.set(0.5, 1);
+
+        this.goodWitchAnimatedJump.scale.set(3);
+        this.goodWitchAnimatedJump.animationSpeed = 0.1;
+        this.goodWitchAnimatedJump.anchor.set(0.5, 1);
+        
+
+
 
 
         this.speed.x = 250;
@@ -108,6 +117,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     public override update(deltaMS: number) {
         super.update(deltaMS / 1000);
         this.goodWitchAnimatedRun.update(deltaMS / (1000 / 60));
+        this.goodWitchAnimatedJump.update(deltaMS / (1000 / 60));
 
         if (Keyboard.state.get("KeyD")) {
             this.speed.x = GoodWitch.MOVE_SPEED;
@@ -121,16 +131,53 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         if (Keyboard.state.get("KeyS")) {
             this.acceleration.y = GoodWitch.GRAVITY * 5;
+            
         } else {
             this.acceleration.y = GoodWitch.GRAVITY;
+            
         }
+
+        if (this.x > WIDTH) {
+            this.x = WIDTH;
+
+
+
+        } else if (this.x < 0) {
+            this.x = 0;
+
+
+
+        }
+        if (this.y > HEIGHT) {
+            this.y = HEIGHT;
+            this.speed.y = 0;
+            this.canJump = true;
+            this.removeChild(this.goodWitchAnimatedJump);
+            this.addChild(this.goodWitchAnimatedRun);
+            this.goodWitchAnimatedRun.play();
+            this.isJumping = false;
+        }
+
     }
+
     private jump() {
         if (this.canJump) {
+            this.removeChild(this.goodWitchAnimatedRun);
+            this.addChild(this.goodWitchAnimatedJump);
+            this.goodWitchAnimatedJump.onComplete = () => {
+                if (this.isJumping && this.goodWitchAnimatedJump.currentFrame === this.goodWitchAnimatedJump.totalFrames - 1) {
+                    this.goodWitchAnimatedJump.stop();
+                }
+                };
+
+            this.isJumping = true;
+                this.goodWitchAnimatedJump.play();
             this.canJump = false;
             this.speed.y = -GoodWitch.JUMP_SPEED;
+            this.goodWitchAnimatedJump.gotoAndPlay(0);
         }
     }
+
 
     public separate(overlap: Rectangle, platform: ObservablePoint<any>) {
         if (overlap.width < overlap.height) {
@@ -148,12 +195,24 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
                 this.y -= overlap.height;
                 this.speed.y = 0;
                 this.canJump = true;
+                this.removeChild(this.goodWitchAnimatedJump);
+                this.addChild(this.goodWitchAnimatedRun);
+                this.goodWitchAnimatedRun.play();
+                this.isJumping = false;
 
 
             } else if (this.y < platform.y) {
                 this.y += overlap.height;
             }
-
         }
+
+
+
+
     }
+
+
+
 }
+
+
