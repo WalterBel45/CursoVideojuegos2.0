@@ -160,11 +160,11 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     }
 
-    private jump() {
+    public jump() {
         if (this.canJump) {
             this.removeChild(this.goodWitchAnimatedRun);
             this.addChild(this.goodWitchAnimatedJump);
-            this.goodWitchAnimatedJump.onComplete = () => {
+            this.goodWitchAnimatedJump.onFrameChange = () => {
                 if (this.isJumping && this.goodWitchAnimatedJump.currentFrame === this.goodWitchAnimatedJump.totalFrames - 1) {
                     this.goodWitchAnimatedJump.stop();
                 }
@@ -210,7 +210,6 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
 
     }
-
 
 
 }

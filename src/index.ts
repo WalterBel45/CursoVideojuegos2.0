@@ -3,6 +3,7 @@ import { assets } from './assets';
 import { Keyboard } from './utils/keyboard';
 //import { Scene } from './scenes/Scene';
 import { ThickerScene } from './scenes/ThickerScene';
+//import { MenuScene } from './scenes/MenuScene';
 
 export const WIDTH = 1920;
 export const HEIGHT = 1080;
@@ -44,6 +45,7 @@ window.dispatchEvent(new Event("resize"));
 Loader.shared.add(assets);
 
 Loader.shared.onComplete.add(() => {
+	//const myScene = new MenuScene();
 	const myScene = new ThickerScene();
 	app.stage.addChild(myScene);
 	Ticker.shared.add(function (deltaFrame) {
