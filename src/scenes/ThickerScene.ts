@@ -13,9 +13,11 @@ export class ThickerScene extends Container implements IUpdateable {
     private background: TilingSprite;
     private gameSpeed: number = 100;
     private timePassed: number = 0;
+    
 
     constructor() {
         super();
+
 
         this.world = new Container();
         this.background = new TilingSprite(Texture.from("background1"), WIDTH, HEIGHT);
@@ -49,19 +51,67 @@ export class ThickerScene extends Container implements IUpdateable {
 
 
         
-        this.goodWitch = new GoodWitch();
-        this.world.addChild(this.goodWitch);
-        this.goodWitch.x = 100;
-        this.goodWitch.y = 100;
+        
+        
+        
 
         this.addChild(this.world);
 
+        
 
+        this.goodWitch = new GoodWitch();
+
+        this.goodWitch.x = 50;
+        this.goodWitch.y = 50;
+        
+        this.goodWitch.addState("run", [
+            Texture.from("goodwitchrun1"),
+            Texture.from("goodwitchrun2"),
+            Texture.from("goodwitchrun3"),
+            Texture.from("goodwitchrun4"),
+            Texture.from("goodwitchrun5"),
+            Texture.from("goodwitchrun6"),
+            Texture.from("goodwitchrun7"),
+            Texture.from("goodwitchrun8"),
+            Texture.from("goodwitchrun9"),
+            Texture.from("goodwitchrun10"),
+            Texture.from("goodwitchrun11"),
+            Texture.from("goodwitchrun12"),
+            Texture.from("goodwitchrun13"),
+            Texture.from("goodwitchrun14"),
+            Texture.from("goodwitchrun15"),
+            Texture.from("goodwitchrun16")
+        ], 0.3, 3, true
+       
+        );
+
+        this.goodWitch.addState("jump", [
+            Texture.from("jumpAnimation1"),
+            Texture.from("jumpAnimation2"),
+            Texture.from("jumpAnimation3"),
+            Texture.from("jumpAnimation4"),
+            Texture.from("jumpAnimation5"),
+            Texture.from("jumpAnimation6"),
+            Texture.from("jumpAnimation7"),
+            Texture.from("jumpAnimation8"),
+            Texture.from("jumpAnimation9"),
+            Texture.from("jumpAnimation10"),
+            Texture.from("jumpAnimation11"),
+            Texture.from("jumpAnimation12"),
+            Texture.from("jumpAnimation13"),
+            Texture.from("jumpAnimation14"),
+            Texture.from("jumpAnimation15"),
+        ], 0.1, 3, false
+         );
+
+         this.world.addChild(this.goodWitch);
+         this.goodWitch.playState("run", true);
     }
 
 
     public update(deltaTime: number, _deltaFrame: number): void {
         
+        this.goodWitch.update(deltaTime);
         this.timePassed += deltaTime;
 
         if (this.timePassed > 2000) {
@@ -75,7 +125,7 @@ export class ThickerScene extends Container implements IUpdateable {
 
         }
         
-        this.goodWitch.update(deltaTime);
+        
 
         for (let platform of this.platforms) {
             platform.speed.x = -this.gameSpeed;

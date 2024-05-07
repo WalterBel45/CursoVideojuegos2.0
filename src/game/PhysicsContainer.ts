@@ -11,5 +11,6 @@ export class PhysicsContainer extends Container {
 
         this.speed.x += this.acceleration.x * deltaSeconds;
         this.speed.y += this.acceleration.y * deltaSeconds;
+        
     }
 }

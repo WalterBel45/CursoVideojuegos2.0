@@ -1,4 +1,4 @@
-import { AnimatedSprite, Graphics, ObservablePoint, Rectangle, Texture } from "pixi.js";
+import { AnimatedSprite, Container, Graphics, ObservablePoint, Rectangle, Texture } from "pixi.js";
 import { PhysicsContainer } from "./PhysicsContainer";
 //import { HEIGHT, WIDTH } from "..";
 //import { Keyboard } from "../utils/keyboard";
@@ -14,14 +14,15 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     public canJump = true;
     private hitbox: Graphics;
     private static readonly JUMP_SPEED = 600;
-    //private isJumping = false;
-
+    private isJumping = false;
     private states: Map<string, AnimatedSprite> = new Map();
+    private animContainer: Container = new Container();
 
 
     constructor() {
         super();
 
+        this.addChild(this.animContainer);
         this.speed.x = 250;
         this.speed.y = 0;
         this.acceleration.y = GoodWitch.GRAVITY;
@@ -47,9 +48,6 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
 
 
-
-        this.addChild(this.goodWitchAnimated);
-        this.goodWitchAnimated.playState("run");
         this.addChild(auxZero);
         this.addChild(this.hitbox);
 
@@ -68,8 +66,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     public override update(deltaMS: number) {
         super.update(deltaMS / 1000);
 
-        for (const states of this.states.values()) {
-            states.update(deltaMS);
+        for (const state of this.states.values()) {
+            state.update(deltaMS / (1000 / 60));
         }
 
         if (Keyboard.state.get("KeyD")) {
@@ -83,7 +81,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         }
 
         if (Keyboard.state.get("KeyS")) {
-            this.acceleration.y = GoodWitch.GRAVITY * 5;
+            
+            this.acceleration.y = GoodWitch.GRAVITY * 2;
 
         } else {
             this.acceleration.y = GoodWitch.GRAVITY;
@@ -105,16 +104,16 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.y = HEIGHT;
             this.speed.y = 0;
             this.canJump = true;
-            //this.isJumping = false;
+            this.isJumping = false;
         }
 
     }
 
     public jump() {
-        if (this.canJump) {
+        if (this.canJump && !this.isJumping) {
 
 
-            //this.isJumping = true;
+            this.isJumping = true;
 
             this.canJump = false;
             this.speed.y = -GoodWitch.JUMP_SPEED;
@@ -135,18 +134,32 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         } else {
 
-            if (this.y > platform.y) {
-                this.y -= overlap.height;
-                this.speed.y = 0;
-                this.canJump = true;
-                //this.isJumping = false;
-
-
-            } else if (this.y < platform.y) {
+             if (this.y > platform.y) {
+                
                 this.y += overlap.height;
-            }
-        }
+                this.acceleration.y += GoodWitch.GRAVITY;
+                
+                
+                
+                
 
+
+
+
+
+            } else if  (this.y < platform.y) 
+            this.acceleration.y = 0;
+            this.speed.y = 0; 
+            this.y -= overlap.height;
+            this.canJump = true;
+            this.isJumping = false;
+           
+            
+            
+
+            }
+        
+    
 
 
 
@@ -167,15 +180,20 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         tempAnimation.scale.set(scale);
         tempAnimation.loop = loop;
         tempAnimation.play();
+        tempAnimation.anchor.set(0.5, 1);
         this.states.set(stateName, tempAnimation);
     }
 
-    public playState(stateName: string) {
-        this.removeChildren();
+    public playState(stateName: string, restartAnim: boolean) {
+        this.animContainer.removeChildren();
         const currentState = this.states.get(stateName)
         if (currentState) {
-            this.addChild(currentState);
+            this.animContainer.addChild(currentState);
+            if (restartAnim) {
+                currentState?.gotoAndPlay(0);
+            }
         }
+
     }
 
 }
