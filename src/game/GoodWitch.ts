@@ -11,76 +11,25 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     private static readonly GRAVITY = 350;
     private static readonly MOVE_SPEED = 350;
-    private goodWitchAnimatedRun: AnimatedSprite;
     public canJump = true;
-    private goodWitchAnimatedJump: AnimatedSprite;
     private hitbox: Graphics;
     private static readonly JUMP_SPEED = 600;
-    private isJumping = false;
+    //private isJumping = false;
+
+    private states: Map<string, AnimatedSprite> = new Map();
+
 
     constructor() {
         super();
 
-        this.goodWitchAnimatedRun = new AnimatedSprite(
-            [
-                Texture.from("goodwitchrun1"),
-                Texture.from("goodwitchrun2"),
-                Texture.from("goodwitchrun3"),
-                Texture.from("goodwitchrun4"),
-                Texture.from("goodwitchrun5"),
-                Texture.from("goodwitchrun6"),
-                Texture.from("goodwitchrun7"),
-                Texture.from("goodwitchrun8"),
-                Texture.from("goodwitchrun9"),
-                Texture.from("goodwitchrun10"),
-                Texture.from("goodwitchrun11"),
-                Texture.from("goodwitchrun12"),
-                Texture.from("goodwitchrun13"),
-                Texture.from("goodwitchrun14"),
-                Texture.from("goodwitchrun15"),
-                Texture.from("goodwitchrun16")
-            ],
-            false
-        );
-
-        this.goodWitchAnimatedJump = new AnimatedSprite(
-            [
-                Texture.from("jumpAnimation1"),
-                Texture.from("jumpAnimation2"),
-                Texture.from("jumpAnimation3"),
-                Texture.from("jumpAnimation4"),
-                Texture.from("jumpAnimation5"),
-                Texture.from("jumpAnimation6"),
-                Texture.from("jumpAnimation7"),
-                Texture.from("jumpAnimation8"),
-                Texture.from("jumpAnimation9"),
-                Texture.from("jumpAnimation10"),
-                Texture.from("jumpAnimation11"),
-                Texture.from("jumpAnimation12"),
-                Texture.from("jumpAnimation13"),
-                Texture.from("jumpAnimation14"),
-                Texture.from("jumpAnimation15"),
-            ],
-            false
-        );
-
-        this.goodWitchAnimatedRun.scale.set(3);
-        this.goodWitchAnimatedRun.animationSpeed = 0.3;
-        this.goodWitchAnimatedRun.play();
-        this.goodWitchAnimatedRun.anchor.set(0.5, 1);
-
-        this.goodWitchAnimatedJump.scale.set(3);
-        this.goodWitchAnimatedJump.animationSpeed = 0.1;
-        this.goodWitchAnimatedJump.anchor.set(0.5, 1);
-        
-
-
-
-
         this.speed.x = 250;
         this.speed.y = 0;
         this.acceleration.y = GoodWitch.GRAVITY;
-        Keyboard.down.on("Space", this.jump, this);
+
+        if (Keyboard.down) {
+            Keyboard.down.on("Space", this.jump, this);
+        }
+
 
 
 
@@ -99,12 +48,14 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
 
 
-        this.addChild(this.goodWitchAnimatedRun);
+        this.addChild(this.goodWitchAnimated);
+        this.goodWitchAnimated.playState("run");
         this.addChild(auxZero);
         this.addChild(this.hitbox);
 
 
     }
+
     public override destroy(options: any) {
         super.destroy(options);
         Keyboard.down.off("Space", this.jump);
@@ -116,8 +67,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     public override update(deltaMS: number) {
         super.update(deltaMS / 1000);
-        this.goodWitchAnimatedRun.update(deltaMS / (1000 / 60));
-        this.goodWitchAnimatedJump.update(deltaMS / (1000 / 60));
+
+        for (const states of this.states.values()) {
+            states.update(deltaMS);
+        }
 
         if (Keyboard.state.get("KeyD")) {
             this.speed.x = GoodWitch.MOVE_SPEED;
@@ -131,10 +84,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         if (Keyboard.state.get("KeyS")) {
             this.acceleration.y = GoodWitch.GRAVITY * 5;
-            
+
         } else {
             this.acceleration.y = GoodWitch.GRAVITY;
-            
+
         }
 
         if (this.x > WIDTH) {
@@ -152,29 +105,20 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.y = HEIGHT;
             this.speed.y = 0;
             this.canJump = true;
-            this.removeChild(this.goodWitchAnimatedJump);
-            this.addChild(this.goodWitchAnimatedRun);
-            this.goodWitchAnimatedRun.play();
-            this.isJumping = false;
+            //this.isJumping = false;
         }
 
     }
 
     public jump() {
         if (this.canJump) {
-            this.removeChild(this.goodWitchAnimatedRun);
-            this.addChild(this.goodWitchAnimatedJump);
-            this.goodWitchAnimatedJump.onFrameChange = () => {
-                if (this.isJumping && this.goodWitchAnimatedJump.currentFrame === this.goodWitchAnimatedJump.totalFrames - 1) {
-                    this.goodWitchAnimatedJump.stop();
-                }
-                };
 
-            this.isJumping = true;
-                this.goodWitchAnimatedJump.play();
+
+            //this.isJumping = true;
+
             this.canJump = false;
             this.speed.y = -GoodWitch.JUMP_SPEED;
-            this.goodWitchAnimatedJump.gotoAndPlay(0);
+
         }
     }
 
@@ -195,10 +139,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
                 this.y -= overlap.height;
                 this.speed.y = 0;
                 this.canJump = true;
-                this.removeChild(this.goodWitchAnimatedJump);
-                this.addChild(this.goodWitchAnimatedRun);
-                this.goodWitchAnimatedRun.play();
-                this.isJumping = false;
+                //this.isJumping = false;
 
 
             } else if (this.y < platform.y) {
@@ -211,6 +152,31 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     }
 
+    public addState(stateName: string, frames: Texture[] | string[], animationSpeed: number, scale: number, loop: boolean) {
+
+        const texArray: Texture[] = [];
+        for (const tex of frames) {
+            if (typeof tex == "string") {
+                texArray.push(Texture.from(tex));
+            } else {
+                texArray.push(tex);
+            }
+        }
+        const tempAnimation: AnimatedSprite = new AnimatedSprite(texArray);
+        tempAnimation.animationSpeed = animationSpeed;
+        tempAnimation.scale.set(scale);
+        tempAnimation.loop = loop;
+        tempAnimation.play();
+        this.states.set(stateName, tempAnimation);
+    }
+
+    public playState(stateName: string) {
+        this.removeChildren();
+        const currentState = this.states.get(stateName)
+        if (currentState) {
+            this.addChild(currentState);
+        }
+    }
 
 }
 
