@@ -86,46 +86,49 @@ export class ThickerScene extends Container implements IUpdateable {
         );
 
         this.goodWitch.addState("jump", [
-            Texture.from("jumpAnimation1"),
-            Texture.from("jumpAnimation2"),
-            Texture.from("jumpAnimation3"),
-            Texture.from("jumpAnimation4"),
-            Texture.from("jumpAnimation5"),
-            Texture.from("jumpAnimation6"),
-            Texture.from("jumpAnimation7"),
-            Texture.from("jumpAnimation8"),
-            Texture.from("jumpAnimation9"),
-            Texture.from("jumpAnimation10"),
-            Texture.from("jumpAnimation11"),
-            Texture.from("jumpAnimation12"),
-            Texture.from("jumpAnimation13"),
-            Texture.from("jumpAnimation14"),
-            Texture.from("jumpAnimation15"),
-        ], 0.1, 3, false
+            "jumpAnimation1",
+            "jumpAnimation2",
+            "jumpAnimation3",
+            "jumpAnimation4",
+            "jumpAnimation5",
+            "jumpAnimation6",
+            "jumpAnimation7",
+            "jumpAnimation8",
+            "jumpAnimation9",
+            "jumpAnimation10",
+            "jumpAnimation11",
+            "jumpAnimation12",
+            "jumpAnimation13",
+            "jumpAnimation14",
+            "jumpAnimation15",
+        ], 0.3, 3, true
          );
 
-         this.world.addChild(this.goodWitch);
-         this.goodWitch.playState("run", true);
-    }
+         this.goodWitch.addState("idle", [
+        Texture.from("idleAnimation1"),
+         Texture.from("idleAnimation2"),
+         Texture.from("idleAnimation3"),
+         Texture.from("idleAnimation4"),
+         Texture.from("idleAnimation5"),
+         Texture.from("idleAnimation6"),
+         Texture.from("idleAnimation7"),
+         Texture.from("idleAnimation8"),
+         Texture.from("idleAnimation9"),
+         Texture.from("idleAnimation10"),
+         Texture.from("idleAnimation11"),
+         Texture.from("idleAnimation12"),
+         Texture.from("idleAnimation13")
+        ], 0.2, 3, true
+    );
 
+         this.world.addChild(this.goodWitch);
+         this.goodWitch.playState("jump", true);
+    }
 
     public update(deltaTime: number, _deltaFrame: number): void {
         
         this.goodWitch.update(deltaTime);
         this.timePassed += deltaTime;
-
-        if (this.timePassed > 2000) {
-            this.gameSpeed += 10;
-            this.timePassed = 0;
-        const platform1 = new Platform();
-        platform1.position.set(WIDTH + 950, Math.random() * 1080);
-        platform1.scale.set(5, 2);
-        this.platforms.push(platform1);
-        this.world.addChild(platform1);
-
-        }
-        
-        
 
         for (let platform of this.platforms) {
             platform.speed.x = -this.gameSpeed;
@@ -139,6 +142,18 @@ export class ThickerScene extends Container implements IUpdateable {
             if (platform.getHitbox().right < 0) {
                 platform.destroy();
             }
+        
+        if (this.timePassed > 2000) {
+            this.timePassed = 0;
+        
+            const platform1 = new Platform();
+        platform1.position.set(WIDTH + 950, Math.random() * 1080);
+        platform1.scale.set(5, 2);
+        this.platforms.push(platform1);
+        this.world.addChild(platform1);
+
+        }
+        
 
         }
         this.platforms = this.platforms.filter((elem) => !elem.destroyed);

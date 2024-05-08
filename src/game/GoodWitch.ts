@@ -23,7 +23,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         super();
 
         this.addChild(this.animContainer);
-        this.speed.x = 250;
+        this.speed.x = 0;
         this.speed.y = 0;
         this.acceleration.y = GoodWitch.GRAVITY;
 
@@ -73,11 +73,14 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         if (Keyboard.state.get("KeyD")) {
             this.speed.x = GoodWitch.MOVE_SPEED;
             this.scale.x = 1
+            this.playState("run", false);
         } else if (Keyboard.state.get("KeyA")) {
             this.speed.x = -GoodWitch.MOVE_SPEED;
             this.scale.x = -1
+            this.playState("run", false);
         } else {
             this.speed.x = 0;
+            this.playState("idle", false);
         }
 
         if (Keyboard.state.get("KeyS")) {
@@ -111,16 +114,16 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     public jump() {
         if (this.canJump && !this.isJumping) {
-
-
             this.isJumping = true;
+
 
             this.canJump = false;
             this.speed.y = -GoodWitch.JUMP_SPEED;
+            this.playState("jump", true);
+            
 
         }
     }
-
 
     public separate(overlap: Rectangle, platform: ObservablePoint<any>) {
         if (overlap.width < overlap.height) {
@@ -153,7 +156,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.y -= overlap.height;
             this.canJump = true;
             this.isJumping = false;
-           
+            
             
             
 
@@ -165,7 +168,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     }
 
-    public addState(stateName: string, frames: Texture[] | string[], animationSpeed: number, scale: number, loop: boolean) {
+    public addState(stateName: string, frames: Texture[] | string[], animationSpeed: number, scale: number, loop?: boolean) {
 
         const texArray: Texture[] = [];
         for (const tex of frames) {
@@ -178,7 +181,9 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         const tempAnimation: AnimatedSprite = new AnimatedSprite(texArray);
         tempAnimation.animationSpeed = animationSpeed;
         tempAnimation.scale.set(scale);
-        tempAnimation.loop = loop;
+        if (loop) {
+            tempAnimation.loop = loop;
+        }
         tempAnimation.play();
         tempAnimation.anchor.set(0.5, 1);
         this.states.set(stateName, tempAnimation);

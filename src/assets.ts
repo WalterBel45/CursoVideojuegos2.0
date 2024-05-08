@@ -49,5 +49,18 @@ export const assets = [
     {url: "./good witch/jumpAnimation/JumpAnimation13.png", name:"jumpAnimation13"},
     {url: "./good witch/jumpAnimation/JumpAnimation14.png", name:"jumpAnimation14"},
     {url: "./good witch/jumpAnimation/JumpAnimation15.png", name:"jumpAnimation15"},
+    {url: "./good witch/idleAnimation/IdleAnimation1.png", name:"idleAnimation1"},
+    {url: "./good witch/idleAnimation/IdleAnimation2.png", name:"idleAnimation2"},
+    {url: "./good witch/idleAnimation/IdleAnimation3.png", name:"idleAnimation3"},
+    {url: "./good witch/idleAnimation/IdleAnimation4.png", name:"idleAnimation4"},
+    {url: "./good witch/idleAnimation/IdleAnimation5.png", name:"idleAnimation5"},
+    {url: "./good witch/idleAnimation/IdleAnimation6.png", name:"idleAnimation6"},
+    {url: "./good witch/idleAnimation/IdleAnimation7.png", name:"idleAnimation7"},
+    {url: "./good witch/idleAnimation/IdleAnimation8.png", name:"idleAnimation8"},
+    {url: "./good witch/idleAnimation/IdleAnimation9.png", name:"idleAnimation9"},
+    {url: "./good witch/idleAnimation/IdleAnimation10.png", name:"idleAnimation10"},
+    {url: "./good witch/idleAnimation/IdleAnimation11.png", name:"idleAnimation11"},
+    {url: "./good witch/idleAnimation/IdleAnimation12.png", name:"idleAnimation12"},
+    {url: "./good witch/idleAnimation/idleAnimation13.png", name:"idleAnimation13"},
 
 ]

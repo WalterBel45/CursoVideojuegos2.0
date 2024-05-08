@@ -35,7 +35,7 @@ export class MenuScene extends Container implements IUpdateable {
         this.character.update(deltaTime);
         
         if (this.timePassed > 2000){
-            this.character.jump();
+            //this.character.jump();
             this.timePassed = 0;
         }
     }
