@@ -17,6 +17,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private isJumping = false;
     private states: Map<string, AnimatedSprite> = new Map();
     private animContainer: Container = new Container();
+    private maximumFallSpeed = 400;
 
 
     constructor() {
@@ -74,17 +75,27 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.speed.x = GoodWitch.MOVE_SPEED;
             this.scale.x = 1
             this.playState("run", false);
+            
         } else if (Keyboard.state.get("KeyA")) {
             this.speed.x = -GoodWitch.MOVE_SPEED;
             this.scale.x = -1
             this.playState("run", false);
-        } else {
+        }
+        else {
             this.speed.x = 0;
             this.playState("idle", false);
         }
 
+        if (this.isJumping) {
+            this.playState("jump", false);
+        }
+
+        if (Keyboard.state.get("KeyQ")) {
+            this.playState("death", false);
+        }
+
         if (Keyboard.state.get("KeyS")) {
-            
+
             this.acceleration.y = GoodWitch.GRAVITY * 2;
 
         } else {
@@ -110,17 +121,22 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.isJumping = false;
         }
 
+        if (this.speed.y > this.maximumFallSpeed) {
+            this.speed.y = this.maximumFallSpeed;
+
+        } 
+        
+
     }
 
     public jump() {
         if (this.canJump && !this.isJumping) {
             this.isJumping = true;
-
-
             this.canJump = false;
             this.speed.y = -GoodWitch.JUMP_SPEED;
-            this.playState("jump", true);
-            
+
+
+
 
         }
     }
@@ -137,32 +153,27 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         } else {
 
-             if (this.y > platform.y) {
-                
+            if (this.y > platform.y) {
+
                 this.y += overlap.height;
                 this.acceleration.y += GoodWitch.GRAVITY;
-                
-                
-                
-                
 
 
-
-
-
-            } else if  (this.y < platform.y) 
-            this.acceleration.y = 0;
-            this.speed.y = 0; 
+            } else if (this.y < platform.y) {
+                this.acceleration.y = 0;
+            this.speed.y = 0;
             this.y -= overlap.height;
             this.canJump = true;
             this.isJumping = false;
-            
-            
+            }
             
 
-            }
-        
-    
+
+
+
+        }
+
+
 
 
 

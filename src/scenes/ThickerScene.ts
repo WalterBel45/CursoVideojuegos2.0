@@ -82,27 +82,25 @@ export class ThickerScene extends Container implements IUpdateable {
             Texture.from("goodwitchrun15"),
             Texture.from("goodwitchrun16")
         ], 0.3, 3, true
-       
-        );
+       );
 
-        this.goodWitch.addState("jump", [
-            "jumpAnimation1",
-            "jumpAnimation2",
-            "jumpAnimation3",
-            "jumpAnimation4",
-            "jumpAnimation5",
-            "jumpAnimation6",
-            "jumpAnimation7",
-            "jumpAnimation8",
-            "jumpAnimation9",
-            "jumpAnimation10",
-            "jumpAnimation11",
-            "jumpAnimation12",
-            "jumpAnimation13",
-            "jumpAnimation14",
-            "jumpAnimation15",
-        ], 0.3, 3, true
-         );
+        this.goodWitch.addState("jump", [Texture.from("jumpAnimation1"),
+        Texture.from("jumpAnimation2"),
+        Texture.from("jumpAnimation3"),
+        Texture.from("jumpAnimation4"),
+        Texture.from("jumpAnimation5"),
+        Texture.from("jumpAnimation6"),
+        Texture.from("jumpAnimation7"),
+        Texture.from("jumpAnimation8"),
+        Texture.from("jumpAnimation9"),
+        Texture.from("jumpAnimation10"),
+        Texture.from("jumpAnimation11"),
+        Texture.from("jumpAnimation12"),
+        Texture.from("jumpAnimation13"),
+        Texture.from("jumpAnimation14"),
+        Texture.from("jumpAnimation15"),
+        ], 0.04, 3, false
+    );
 
          this.goodWitch.addState("idle", [
         Texture.from("idleAnimation1"),
@@ -121,8 +119,21 @@ export class ThickerScene extends Container implements IUpdateable {
         ], 0.2, 3, true
     );
 
+        this.goodWitch.addState("death", [Texture.from("deathAnimation1"),
+        Texture.from("deathAnimation2"),
+        Texture.from("deathAnimation3"),
+        Texture.from("deathAnimation4"),
+        Texture.from("deathAnimation5"),
+        Texture.from("deathAnimation6"),
+        Texture.from("deathAnimation7"),
+        Texture.from("deathAnimation8"),
+        Texture.from("deathAnimation9"),
+        Texture.from("deathAnimation10"),
+        ], 0.2, 3, false
+    )
+
          this.world.addChild(this.goodWitch);
-         this.goodWitch.playState("jump", true);
+         this.goodWitch.playState("idle", true);
     }
 
     public update(deltaTime: number, _deltaFrame: number): void {
@@ -135,7 +146,7 @@ export class ThickerScene extends Container implements IUpdateable {
             platform.update(deltaTime/1000);
             const overlap = checkCollision(this.goodWitch, platform);
             if (overlap != null) {
-
+                console.log(this.goodWitch.speed.y, this.goodWitch.acceleration.y)
                 this.goodWitch.separate(overlap, platform.position);
 
             }

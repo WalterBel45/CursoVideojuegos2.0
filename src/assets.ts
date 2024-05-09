@@ -62,5 +62,15 @@ export const assets = [
     {url: "./good witch/idleAnimation/IdleAnimation11.png", name:"idleAnimation11"},
     {url: "./good witch/idleAnimation/IdleAnimation12.png", name:"idleAnimation12"},
     {url: "./good witch/idleAnimation/idleAnimation13.png", name:"idleAnimation13"},
+    {url: "./good witch/deathAnimation/deathAnimation1.png", name:"deathAnimation1"},
+    {url: "./good witch/deathAnimation/deathAnimation2.png", name:"deathAnimation2"},
+    {url: "./good witch/deathAnimation/deathAnimation3.png", name:"deathAnimation3"},
+    {url: "./good witch/deathAnimation/deathAnimation4.png", name:"deathAnimation4"},
+    {url: "./good witch/deathAnimation/deathAnimation5.png", name:"deathAnimation5"},
+    {url: "./good witch/deathAnimation/deathAnimation6.png", name:"deathAnimation6"},
+    {url: "./good witch/deathAnimation/deathAnimation7.png", name:"deathAnimation7"},
+    {url: "./good witch/deathAnimation/deathAnimation8.png", name:"deathAnimation8"},
+    {url: "./good witch/deathAnimation/deathAnimation9.png", name:"deathAnimation9"},
+    {url: "./good witch/deathAnimation/deathAnimation.png", name:"deathAnimation10"},
 
 ]
