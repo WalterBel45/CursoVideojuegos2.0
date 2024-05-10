@@ -17,7 +17,9 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private isJumping = false;
     private states: Map<string, AnimatedSprite> = new Map();
     private animContainer: Container = new Container();
-    private maximumFallSpeed = 400;
+    private maximumFallSpeed = 300;
+    private canDying = false;
+    private isDying: boolean = false;
 
 
     constructor() {
@@ -30,6 +32,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         if (Keyboard.down) {
             Keyboard.down.on("Space", this.jump, this);
+            Keyboard.down.on("KeyQ", this.die, this);
+
         }
 
 
@@ -55,9 +59,13 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     }
 
+    
+
     public override destroy(options: any) {
         super.destroy(options);
         Keyboard.down.off("Space", this.jump);
+        Keyboard.down.off("KeyQ", this.die);
+
     }
 
     getHitbox(): Rectangle {
@@ -66,6 +74,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     public override update(deltaMS: number) {
         super.update(deltaMS / 1000);
+        
 
         for (const state of this.states.values()) {
             state.update(deltaMS / (1000 / 60));
@@ -87,11 +96,13 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         }
 
         if (this.isJumping) {
-            this.playState("jump", false);
+            this.playState("jump", true);
+            
         }
-
-        if (Keyboard.state.get("KeyQ")) {
-            this.playState("death", false);
+        
+        if (this.isDying) {
+            this.playState("death", true);
+            
         }
 
         if (Keyboard.state.get("KeyS")) {
@@ -119,6 +130,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.speed.y = 0;
             this.canJump = true;
             this.isJumping = false;
+            this.canDying = true;
+            this.isDying = false;
         }
 
         if (this.speed.y > this.maximumFallSpeed) {
@@ -141,6 +154,16 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         }
     }
 
+    public die() {
+        if (this.canDying && !this.isDying) {
+            this.speed.x = 0;
+            this.speed.y = 0;
+            this.isDying = true;
+            this.canDying = false;
+        }
+        
+    }
+
     public separate(overlap: Rectangle, platform: ObservablePoint<any>) {
         if (overlap.width < overlap.height) {
 
@@ -157,6 +180,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
                 this.y += overlap.height;
                 this.acceleration.y += GoodWitch.GRAVITY;
+                
 
 
             } else if (this.y < platform.y) {
@@ -194,24 +218,35 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         tempAnimation.scale.set(scale);
         if (loop) {
             tempAnimation.loop = loop;
-        }
+        } 
         tempAnimation.play();
         tempAnimation.anchor.set(0.5, 1);
+
+    
+        
         this.states.set(stateName, tempAnimation);
     }
 
-    public playState(stateName: string, restartAnim: boolean) {
+    public playState(stateName: string, _restartAnim: boolean) {
         this.animContainer.removeChildren();
         const currentState = this.states.get(stateName)
         if (currentState) {
             this.animContainer.addChild(currentState);
-            if (restartAnim) {
-                currentState?.gotoAndPlay(0);
+            currentState.onComplete = () => {
+                currentState.gotoAndPlay(0);
             }
+
+            }
+           /* if (restartAnim) {
+                currentState?.gotoAndPlay(0);
+                
+                }
+            }*/
+            
         }
 
     }
 
-}
+
 
 

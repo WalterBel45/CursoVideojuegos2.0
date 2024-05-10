@@ -115,11 +115,11 @@ export class ThickerScene extends Container implements IUpdateable {
          Texture.from("idleAnimation10"),
          Texture.from("idleAnimation11"),
          Texture.from("idleAnimation12"),
-         Texture.from("idleAnimation13")
+         /*Texture.from("idleAnimation13"),*/
         ], 0.2, 3, true
     );
 
-        this.goodWitch.addState("death", [Texture.from("deathAnimation1"),
+        this.goodWitch.addState("death", [/*Texture.from("deathAnimation1"),*/
         Texture.from("deathAnimation2"),
         Texture.from("deathAnimation3"),
         Texture.from("deathAnimation4"),
@@ -133,7 +133,7 @@ export class ThickerScene extends Container implements IUpdateable {
     )
 
          this.world.addChild(this.goodWitch);
-         this.goodWitch.playState("idle", true);
+         this.goodWitch.playState("idle", false);
     }
 
     public update(deltaTime: number, _deltaFrame: number): void {
@@ -146,7 +146,6 @@ export class ThickerScene extends Container implements IUpdateable {
             platform.update(deltaTime/1000);
             const overlap = checkCollision(this.goodWitch, platform);
             if (overlap != null) {
-                console.log(this.goodWitch.speed.y, this.goodWitch.acceleration.y)
                 this.goodWitch.separate(overlap, platform.position);
 
             }
