@@ -72,5 +72,15 @@ export const assets = [
     {url: "./good witch/deathAnimation/deathAnimation8.png", name:"deathAnimation8"},
     {url: "./good witch/deathAnimation/deathAnimation9.png", name:"deathAnimation9"},
     {url: "./good witch/deathAnimation/deathAnimation.png", name:"deathAnimation10"},
+    {url: "./good witch/attackAnimation/AttackAnimation1.png", name:"attackAnimation1"},
+    {url: "./good witch/attackAnimation/AttackAnimation2.png", name:"attackAnimation2"},
+    {url: "./good witch/attackAnimation/AttackAnimation3.png", name:"attackAnimation3"},
+    {url: "./good witch/attackAnimation/AttackAnimation4.png", name:"attackAnimation4"},
+    {url: "./good witch/attackAnimation/AttackAnimation5.png", name:"attackAnimation5"},
+    {url: "./good witch/attackAnimation/AttackAnimation6.png", name:"attackAnimation6"},
+    {url: "./good witch/attackAnimation/AttackAnimation7.png", name:"attackAnimation7"},
+    {url: "./good witch/attackAnimation/AttackAnimation8.png", name:"attackAnimation8"},
+    {url: "./good witch/attackAnimation/AttackAnimation9.png", name:"attackAnimation9"},
+    {url: "./good witch/attackAnimation/AttackAnimation10.png", name:"attackAnimation10"},
 
 ]

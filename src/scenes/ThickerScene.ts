@@ -99,7 +99,7 @@ export class ThickerScene extends Container implements IUpdateable {
         Texture.from("jumpAnimation13"),
         Texture.from("jumpAnimation14"),
         Texture.from("jumpAnimation15"),
-        ], 0.04, 3, false
+        ], 0.04, 3, true, false
     );
 
          this.goodWitch.addState("idle", [
@@ -129,10 +129,25 @@ export class ThickerScene extends Container implements IUpdateable {
         Texture.from("deathAnimation8"),
         Texture.from("deathAnimation9"),
         Texture.from("deathAnimation10"),
-        ], 0.2, 3, false
+        ], 0.2, 3, true, false
     )
 
-         this.world.addChild(this.goodWitch);
+        this.goodWitch.addState("attack", [Texture.from("attackAnimation1"),
+        Texture.from("attackAnimation2"),
+        Texture.from("attackAnimation3"),
+        Texture.from("attackAnimation4"),
+        Texture.from("attackAnimation5"),
+        Texture.from("attackAnimation6"),
+        Texture.from("attackAnimation7"),
+        Texture.from("attackAnimation8"),
+        Texture.from("attackAnimation9"),
+        Texture.from("attackAnimation10"),
+        ], 0.2, 3, true, false
+    ) 
+
+    
+    
+        this.world.addChild(this.goodWitch);
          this.goodWitch.playState("idle", false);
     }
 

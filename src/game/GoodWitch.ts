@@ -20,6 +20,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private maximumFallSpeed = 300;
     private canDying = false;
     private isDying: boolean = false;
+    private isAttacking = false;
+    private canAttack = true;
 
 
     constructor() {
@@ -33,7 +35,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         if (Keyboard.down) {
             Keyboard.down.on("Space", this.jump, this);
             Keyboard.down.on("KeyQ", this.die, this);
-
+            Keyboard.down.on("KeyE", this.attack, this);
         }
 
 
@@ -63,8 +65,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     public override destroy(options: any) {
         super.destroy(options);
+        
         Keyboard.down.off("Space", this.jump);
         Keyboard.down.off("KeyQ", this.die);
+        Keyboard.down.off("KeyE", this.attack);
 
     }
 
@@ -96,7 +100,9 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         }
 
         if (this.isJumping) {
+            this.jump();
             this.playState("jump", true);
+
             
         }
         
@@ -104,6 +110,18 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.playState("death", true);
             
         }
+
+        if (this.isAttacking) {
+           
+            this.playState("attack", true); 
+            this.isAttacking = false;
+            this.canAttack = true;
+           
+
+            
+        
+    }
+
 
         if (Keyboard.state.get("KeyS")) {
 
@@ -113,6 +131,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.acceleration.y = GoodWitch.GRAVITY;
 
         }
+        
 
         if (this.x > WIDTH) {
             this.x = WIDTH;
@@ -164,6 +183,13 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         
     }
 
+    public attack() {
+       if (this.canAttack && !this.isAttacking) {
+        this.canAttack = false;
+        this.isAttacking = true;
+       }
+    }
+
     public separate(overlap: Rectangle, platform: ObservablePoint<any>) {
         if (overlap.width < overlap.height) {
 
@@ -203,7 +229,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     }
 
-    public addState(stateName: string, frames: Texture[] | string[], animationSpeed: number, scale: number, loop?: boolean) {
+    public addState(stateName: string, frames: Texture[] | string[], animationSpeed: number, scale: number, _onlyOnce:boolean, loop?: boolean) {
 
         const texArray: Texture[] = [];
         for (const tex of frames) {
@@ -219,7 +245,11 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         if (loop) {
             tempAnimation.loop = loop;
         } 
+
+        
+        
         tempAnimation.play();
+        
         tempAnimation.anchor.set(0.5, 1);
 
     
@@ -227,25 +257,35 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.states.set(stateName, tempAnimation);
     }
 
-    public playState(stateName: string, _restartAnim: boolean) {
+    public playState(stateName: string, onlyOnce: boolean) {
         this.animContainer.removeChildren();
         const currentState = this.states.get(stateName)
         if (currentState) {
             this.animContainer.addChild(currentState);
-            currentState.onComplete = () => {
-                currentState.gotoAndPlay(0);
-            }
-
-            }
-           /* if (restartAnim) {
-                currentState?.gotoAndPlay(0);
+            
+            if (onlyOnce) {
+                
+            
+                    currentState.onComplete = () => {
+                        console.log("se activo");
+                        currentState.stop();
+                    }
+                    
+                    
+                
                 
                 }
-            }*/
+            }
+
+            }
+        
             
         }
+            
 
-    }
+            
+        
+    
 
 
 
