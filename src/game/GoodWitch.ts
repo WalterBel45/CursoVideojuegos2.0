@@ -15,13 +15,14 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private hitbox: Graphics;
     private static readonly JUMP_SPEED = 600;
     private isJumping = false;
-    private states: Map<string, AnimatedSprite> = new Map();
+    public states: Map<string, AnimatedSprite> = new Map();
     private animContainer: Container = new Container();
     private maximumFallSpeed = 300;
     private canDying = false;
     private isDying: boolean = false;
     private isAttacking = false;
     private canAttack = true;
+    
 
 
     constructor() {
@@ -80,9 +81,9 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         super.update(deltaMS / 1000);
         
 
-        for (const state of this.states.values()) {
+        /*for (const state of this.states.values()) {
             state.update(deltaMS / (1000 / 60));
-        }
+        }*/
 
         if (Keyboard.state.get("KeyD")) {
             this.speed.x = GoodWitch.MOVE_SPEED;
@@ -100,22 +101,21 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         }
 
         if (this.isJumping) {
-            this.jump();
             this.playState("jump", true);
-
             
-        }
+        } 
         
         if (this.isDying) {
             this.playState("death", true);
             
+            
+            
         }
 
         if (this.isAttacking) {
+           this.playState("attack", true); 
            
-            this.playState("attack", true); 
-            this.isAttacking = false;
-            this.canAttack = true;
+            
            
 
             
@@ -150,7 +150,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.canJump = true;
             this.isJumping = false;
             this.canDying = true;
-            this.isDying = false;
+            this.canAttack = true;
+            
         }
 
         if (this.speed.y > this.maximumFallSpeed) {
@@ -166,6 +167,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.isJumping = true;
             this.canJump = false;
             this.speed.y = -GoodWitch.JUMP_SPEED;
+            
 
 
 
@@ -215,6 +217,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.y -= overlap.height;
             this.canJump = true;
             this.isJumping = false;
+            this.isAttacking = false;
             }
             
 
@@ -229,7 +232,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     }
 
-    public addState(stateName: string, frames: Texture[] | string[], animationSpeed: number, scale: number, _onlyOnce:boolean, loop?: boolean) {
+    public addState(stateName: string, frames: Texture[] | string[], animationSpeed: number, scale: number, loop: boolean) {
 
         const texArray: Texture[] = [];
         for (const tex of frames) {
@@ -247,7 +250,6 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         } 
 
         
-        
         tempAnimation.play();
         
         tempAnimation.anchor.set(0.5, 1);
@@ -257,26 +259,31 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.states.set(stateName, tempAnimation);
     }
 
-    public playState(stateName: string, onlyOnce: boolean) {
+    public playState(stateName: string, onlyOnce:boolean) {
         this.animContainer.removeChildren();
         const currentState = this.states.get(stateName)
+        
         if (currentState) {
             this.animContainer.addChild(currentState);
             
             if (onlyOnce) {
                 
             
-                    currentState.onComplete = () => {
-                        console.log("se activo");
-                        currentState.stop();
-                    }
-                    
-                    
+                    currentState.onLoop = () => {
+                        
+                            currentState.stop();
+                            
+                      
+                        
+                    }; 
                 
                 
                 }
+                
+                
+                
             }
-
+            
             }
         
             
