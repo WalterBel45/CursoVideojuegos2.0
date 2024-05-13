@@ -14,7 +14,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     public canJump = true;
     private hitbox: Graphics;
     private static readonly JUMP_SPEED = 600;
-    private isJumping = false;
+    public isJumping = false;
     public states: Map<string, AnimatedSprite> = new Map();
     private animContainer: Container = new Container();
     private maximumFallSpeed = 300;
@@ -88,32 +88,32 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         if (Keyboard.state.get("KeyD")) {
             this.speed.x = GoodWitch.MOVE_SPEED;
             this.scale.x = 1
-            this.playState("run", false);
+            this.playState("run");
             
         } else if (Keyboard.state.get("KeyA")) {
             this.speed.x = -GoodWitch.MOVE_SPEED;
             this.scale.x = -1
-            this.playState("run", false);
+            this.playState("run");
         }
         else {
             this.speed.x = 0;
-            this.playState("idle", false);
+            this.playState("idle");
         }
 
         if (this.isJumping) {
-            this.playState("jump", true);
+            this.playState("jump", true, true);
             
-        } 
+        }
         
         if (this.isDying) {
-            this.playState("death", true);
+            this.playState("death", true, true);
             
             
             
         }
 
         if (this.isAttacking) {
-           this.playState("attack", true); 
+           this.playState("attack", true, true); 
            
             
            
@@ -259,30 +259,47 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.states.set(stateName, tempAnimation);
     }
 
-    public playState(stateName: string, onlyOnce:boolean) {
+    public playState(stateName: string, _restartAnim?:boolean, onlyOnce?:boolean) {
         this.animContainer.removeChildren();
         const currentState = this.states.get(stateName)
-        
+
         if (currentState) {
             this.animContainer.addChild(currentState);
             
-            if (onlyOnce) {
                 
-            
+                if (onlyOnce) {
+
+                    let executed = false;
+                    
                     currentState.onLoop = () => {
                         
+                        if (!executed) {
                             currentState.stop();
+                            executed = true;
+                        } 
+                        
+                        
+                //currentState.gotoAndPlay(currentState.totalFrames);
                             
                       
                         
-                    }; 
-                
-                
+                    };
+                    executed = false;
+                    
+                } else  {
+                    currentState.play();
+                    
                 }
+            
+                
+                
+                
+               
                 
                 
                 
             }
+            
             
             }
         
