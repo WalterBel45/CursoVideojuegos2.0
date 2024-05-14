@@ -82,5 +82,7 @@ export const assets = [
     {url: "./good witch/attackAnimation/AttackAnimation8.png", name:"attackAnimation8"},
     {url: "./good witch/attackAnimation/AttackAnimation9.png", name:"attackAnimation9"},
     {url: "./good witch/attackAnimation/AttackAnimation10.png", name:"attackAnimation10"},
+    {url: "./objects/145.png", name:"manaPot"},
+
 
 ]

@@ -1,9 +1,10 @@
-import { Container, Texture, TilingSprite } from "pixi.js";
+import { Container,Texture, TilingSprite } from "pixi.js";
 import { IUpdateable } from "../utils/IUpdateable";
 import { GoodWitch } from "../game/GoodWitch";
 import { Platform } from "../game/Platform";
 import { HEIGHT, WIDTH } from "..";
 import { checkCollision } from "../utils/IHitbox";
+
 
 export class ThickerScene extends Container implements IUpdateable {
 
@@ -13,6 +14,7 @@ export class ThickerScene extends Container implements IUpdateable {
     private background: TilingSprite;
     private gameSpeed: number = 100;
     private timePassed: number = 0;
+    
     
 
     constructor() {
@@ -49,6 +51,7 @@ export class ThickerScene extends Container implements IUpdateable {
         this.platforms.push(platform1);
         this.world.addChild(platform1);
 
+        
 
         
         
@@ -146,9 +149,9 @@ export class ThickerScene extends Container implements IUpdateable {
     ) 
 
     
-    
         this.world.addChild(this.goodWitch);
          this.goodWitch.playState("idle");
+
     }
 
     public update(deltaTime: number, _deltaFrame: number): void {

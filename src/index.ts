@@ -3,6 +3,7 @@ import { assets } from './assets';
 import { Keyboard } from './utils/keyboard';
 //import { Scene } from './scenes/Scene';
 import { ThickerScene } from './scenes/ThickerScene';
+import { Group } from 'tweedle.js';
 //import { MenuScene } from './scenes/MenuScene';
 
 export const WIDTH = 1920;
@@ -49,6 +50,7 @@ Loader.shared.onComplete.add(() => {
 	const myScene = new ThickerScene();
 	app.stage.addChild(myScene);
 	Ticker.shared.add(function (deltaFrame) {
+		Group.shared.update();
 		myScene.update(Ticker.shared.deltaMS, deltaFrame);
 	})
 
