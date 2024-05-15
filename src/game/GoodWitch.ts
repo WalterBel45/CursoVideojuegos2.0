@@ -152,6 +152,9 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.canDying = true;
             this.canAttack = true;
             
+        } else if (this.y < 0) {
+            this.y = 0;
+            this.speed.y = 0;
         }
 
         if (this.speed.y > this.maximumFallSpeed) {

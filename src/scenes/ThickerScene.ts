@@ -45,11 +45,11 @@ export class ThickerScene extends Container implements IUpdateable {
         this.platforms.push(platform1);
         this.world.addChild(platform1);
         
-        platform1 = new Platform();
+        /*platform1 = new Platform();
         platform1.position.set(2000, 750);
         platform1.scale.set(5, 2);
         this.platforms.push(platform1);
-        this.world.addChild(platform1);
+        this.world.addChild(platform1);*/
 
         
 
@@ -173,11 +173,11 @@ export class ThickerScene extends Container implements IUpdateable {
                 platform.destroy();
             }
         
-        if (this.timePassed > 2000) {
+        if (this.timePassed > 4000) {
             this.timePassed = 0;
         
             const platform1 = new Platform();
-        platform1.position.set(WIDTH + 950, Math.random() * 1080);
+        platform1.position.set(WIDTH + 1250, Math.random() * 950);
         platform1.scale.set(5, 2);
         this.platforms.push(platform1);
         this.world.addChild(platform1);

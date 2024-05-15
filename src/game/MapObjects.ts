@@ -1,4 +1,4 @@
-import { Container, Graphics, Rectangle, Sprite, Texture } from "pixi.js";
+import { Container, Graphics, Rectangle, Sprite } from "pixi.js";
 import { Tween } from "tweedle.js";
 
 export class MapObjects extends Container {
@@ -43,7 +43,7 @@ export class MapObjects extends Container {
         return this.hitbox.getBounds();
     }
 
-    public addItem(image:string) {
+    /*public addItem(image:string) {
 
         const item = Sprite.from(image);
         item.anchor.set(0.5);
@@ -54,9 +54,9 @@ export class MapObjects extends Container {
             .yoyo(true)
             .start();
         
-    }
+    }*/
 
-    public displayItem(stateName: string, _restartAnim?:boolean, onlyOnce?:boolean) {
+    /*public displayItem(stateName: string, _restartAnim?:boolean, onlyOnce?:boolean) {
         this.animContainer.removeChildren();
         const currentState = this.states.get(stateName)
 
@@ -98,5 +98,5 @@ export class MapObjects extends Container {
             }
             
             
-            }
+            }*/
 }
