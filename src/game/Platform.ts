@@ -28,9 +28,22 @@ export class Platform extends PhysicsContainer implements IHitbox {
                 this.manaPot.position.y = platform.height - 60;
     
                 this.addChild(this.manaPot);
+               } else {
+                this.manaPot = null;
                }
     }
     getHitbox(): Rectangle {
         return this.hitbox.getBounds();
+    }
+    
+    removeManaPot(): void {
+        if (this.manaPot) {
+            this.removeChild(this.manaPot);
+            this.manaPot = null;
+        }
+    }
+
+    getManaPot(): MapObjects | null {
+        return this.manaPot;
     }
 }

@@ -4,7 +4,7 @@ import { PhysicsContainer } from "./PhysicsContainer";
 //import { Keyboard } from "../utils/keyboard";
 import { IHitbox } from "../utils/IHitbox";
 import { Keyboard } from "../utils/keyboard";
-import { HEIGHT, WIDTH } from "..";
+import { SceneManager } from "../utils/SceneManager";
 
 export class GoodWitch extends PhysicsContainer implements IHitbox {
 
@@ -22,12 +22,16 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private isDying: boolean = false;
     private isAttacking = false;
     private canAttack = true;
+    private mana:number;
+    private manaMax:number;
     
 
 
     constructor() {
         super();
 
+        this.mana = 0;
+        this.manaMax = 100;
         this.addChild(this.animContainer);
         this.speed.x = 0;
         this.speed.y = 0;
@@ -62,7 +66,17 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     }
 
-    
+    getMana():number {
+        return this.mana;
+    }
+
+    getManaMax(): number {
+        return this.manaMax;
+    }
+
+    addMana(amount:number): void {
+        this.mana = Math.min(this.mana + amount, this.manaMax);
+    }
 
     public override destroy(options: any) {
         super.destroy(options);
@@ -133,8 +147,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         }
         
 
-        if (this.x > WIDTH) {
-            this.x = WIDTH;
+        if (this.x > SceneManager.WIDTH) {
+            this.x = SceneManager.WIDTH;
 
 
 
@@ -144,8 +158,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
 
         }
-        if (this.y > HEIGHT) {
-            this.y = HEIGHT;
+        if (this.y > SceneManager.HEIGHT) {
+            this.y = SceneManager.HEIGHT;
             this.speed.y = 0;
             this.canJump = true;
             this.isJumping = false;
