@@ -24,6 +24,9 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private canAttack = true;
     private mana:number;
     private manaMax:number;
+    private health:number;
+    private healthMax:number;
+
     
 
 
@@ -32,6 +35,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         this.mana = 0;
         this.manaMax = 100;
+        this.health = 10;
+        this.healthMax = 100;
         this.addChild(this.animContainer);
         this.speed.x = 0;
         this.speed.y = 0;
@@ -76,6 +81,18 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     addMana(amount:number): void {
         this.mana = Math.min(this.mana + amount, this.manaMax);
+    }
+
+    getHealth(): number {
+        return this.health;
+    }
+
+    getHealthMax(): number {
+        return this.healthMax;
+    }
+
+    addHealth(amount:number): void {
+        this.health = Math.min(this.health + amount, this.healthMax);
     }
 
     public override destroy(options: any) {

@@ -5,6 +5,7 @@ import { Platform } from "../game/Platform";
 import { checkCollision } from "../utils/IHitbox";
 import { ManaBar } from "../game/ManaBar";
 import { SceneManager } from "../utils/SceneManager";
+import { HealthBar } from "../game/HealthBar";
 
 
 
@@ -18,6 +19,8 @@ export class ThickerScene extends Container implements IUpdateable {
     private gameSpeed: number = 100;
     private timePassed: number = 0;
     private manaBar:ManaBar;
+    private healthBar:HealthBar;
+
     
 
     constructor() {
@@ -198,6 +201,22 @@ export class ThickerScene extends Container implements IUpdateable {
             Texture.from("manabar40"),
             Texture.from("manabar41"),  
         ];
+
+        const healthBarFrames: Texture [] = [
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+            Texture.from("manabar1"),
+        ]
 
         this.manaBar = new ManaBar(manaBarFrames, this.goodWitch.getManaMax());
         this.manaBar.position.set(10, 10); 
