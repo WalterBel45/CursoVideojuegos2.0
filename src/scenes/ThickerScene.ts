@@ -203,24 +203,28 @@ export class ThickerScene extends Container implements IUpdateable {
         ];
 
         const healthBarFrames: Texture [] = [
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
-            Texture.from("manabar1"),
+            Texture.from("healthBar0"),
+            Texture.from("healthBar1"),
+            Texture.from("healthBar2"),
+            Texture.from("healthBar3"),
+            Texture.from("healthBar4"),
+            Texture.from("healthBar5"),
+            Texture.from("healthBar6"),
+            Texture.from("healthBar7"),
+            Texture.from("healthBar8"),
+            Texture.from("healthBar9"),
+            Texture.from("healthBar10"),
+            Texture.from("healthBar11"),
+            Texture.from("healthBar12"),
         ]
 
         this.manaBar = new ManaBar(manaBarFrames, this.goodWitch.getManaMax());
         this.manaBar.position.set(10, 10); 
         this.addChild(this.manaBar);
+
+        this.healthBar = new HealthBar(healthBarFrames, this.goodWitch.getHealthMax());
+        this.healthBar.position.set(10, 80); 
+        this.addChild(this.healthBar);
 
         
     }
