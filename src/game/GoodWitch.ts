@@ -26,6 +26,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private manaMax:number;
     private health:number;
     private healthMax:number;
+    private coins:number;
 
     
 
@@ -34,13 +35,14 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         super();
 
         this.mana = 0;
-        this.manaMax = 100;
+        this.manaMax = 150;
         this.health = 10;
-        this.healthMax = 100;
+        this.healthMax = 125;
         this.addChild(this.animContainer);
         this.speed.x = 0;
         this.speed.y = 0;
         this.acceleration.y = GoodWitch.GRAVITY;
+        this.coins = 0;
 
         if (Keyboard.down) {
             Keyboard.down.on("Space", this.jump, this);
@@ -69,6 +71,14 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.addChild(this.hitbox);
 
 
+    }
+
+    getCoins():number {
+        return this.coins;
+    }
+
+    collectCoins(amount:number): void {
+        this.coins = this.coins + amount;
     }
 
     getMana():number {

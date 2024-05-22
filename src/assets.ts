@@ -133,8 +133,7 @@ export const assets = [
     {url: "./HealthBar/06.png", name:"healthBar6"},
     {url: "./HealthBar/07.png", name:"healthBar7"},
     {url: "./HealthBar/08.png", name:"healthBar8"},
-    {url: "./HealthBar/09.png", name:"healthBar9"},
-    {url: "./HealthBar/10.png", name:"healthBar10"},
-    {url: "./HealthBar/11.png", name:"healthBar11"},
     {url: "./HealthBar/12.png", name:"healthBar12"},
+    {url: "./objects/144.png", name:"healthPot"},
+    {url: "./objects/199.png", name:"coin"},
 ]

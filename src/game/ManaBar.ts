@@ -5,14 +5,14 @@ export class ManaBar extends Container {
     private frames: Texture[];
     private maxMana: number;
     private currentMana: number;
-    private lastSmoothedValue: number;
+    //private lastSmoothedValue: number;
 
     constructor(frames: Texture[], maxMana: number) {
         super();
         this.frames = frames;
         this.maxMana = maxMana;
         this.currentMana = 0;
-        this.lastSmoothedValue = 0;
+        //this.lastSmoothedValue = 0;
 
         
         const background = new Sprite(Texture.from("manaBarBackground"));
@@ -29,22 +29,21 @@ export class ManaBar extends Container {
     }
 
     updateMana(currentMana: number): void {
-       
         this.currentMana = currentMana;
     
        
         const progress = this.currentMana / this.maxMana;
-        const smoothFactor = 0.5; 
-        const smoothedProgress = this.smoothValue(progress, smoothFactor);
-        const frameIndex = Math.floor(smoothedProgress * (this.frames.length - 1));
+    
+        
+        const frameIndex = Math.floor(progress * (this.frames.length - 1));
     
         
         this.bar.texture = this.frames[frameIndex];
     }
     
-    private smoothValue(value: number, factor: number): number {
+    /*private smoothValue(value: number, factor: number): number {
         return value * factor + (1 - factor) * this.lastSmoothedValue;
-    }
+    }*/
     
 }
 

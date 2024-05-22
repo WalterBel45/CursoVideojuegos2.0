@@ -212,9 +212,6 @@ export class ThickerScene extends Container implements IUpdateable {
             Texture.from("healthBar6"),
             Texture.from("healthBar7"),
             Texture.from("healthBar8"),
-            Texture.from("healthBar9"),
-            Texture.from("healthBar10"),
-            Texture.from("healthBar11"),
             Texture.from("healthBar12"),
         ]
 
@@ -249,11 +246,16 @@ export class ThickerScene extends Container implements IUpdateable {
                 
             }
             
-            const manaPot = platform.getManaPot();
-            if (manaPot && checkCollision(this.goodWitch, manaPot)) {
+            const pot = platform.getManaPot();
+            if (pot && checkCollision(this.goodWitch, pot)) {
                 platform.removeManaPot();
-                this.goodWitch.addMana(10);
-                this.manaBar.updateMana(this.goodWitch.getMana());
+                if (pot.getType() === "manaPot") {
+                    this.goodWitch.addMana(10);
+                    this.manaBar.updateMana(this.goodWitch.getMana());
+                } else if (pot.getType() === "healthPot") {
+                    this.goodWitch.addHealth(10);
+                    this.healthBar.updateHealth(this.goodWitch.getHealth());
+                }
             }
 
             if (platform.getHitbox().right < 0) {
