@@ -6,6 +6,7 @@ import { checkCollision } from "../utils/IHitbox";
 import { ManaBar } from "../game/ManaBar";
 import { SceneManager } from "../utils/SceneManager";
 import { HealthBar } from "../game/HealthBar";
+import { CoinsCounter } from "../game/CoinsCounter";
 
 
 
@@ -20,6 +21,7 @@ export class ThickerScene extends Container implements IUpdateable {
     private timePassed: number = 0;
     private manaBar:ManaBar;
     private healthBar:HealthBar;
+    private coinCounter:CoinsCounter;
 
     
 
@@ -223,6 +225,11 @@ export class ThickerScene extends Container implements IUpdateable {
         this.healthBar.position.set(10, 80); 
         this.addChild(this.healthBar);
 
+        this.coinCounter = new CoinsCounter();
+        this.coinCounter.position.set(1750, 10);
+        this.addChild(this.coinCounter);
+
+
         
     }
 
@@ -255,6 +262,9 @@ export class ThickerScene extends Container implements IUpdateable {
                 } else if (pot.getType() === "healthPot") {
                     this.goodWitch.addHealth(10);
                     this.healthBar.updateHealth(this.goodWitch.getHealth());
+                } else if (pot.getType() === "coin") {
+                    //this.goodWitch.collectCoins(1);
+                    this.coinCounter.addCoins(1);
                 }
             }
 
@@ -265,11 +275,14 @@ export class ThickerScene extends Container implements IUpdateable {
         if (this.timePassed > 4000) {
             this.timePassed = 0;
         
-            const platform1 = new Platform();
-        platform1.position.set(SceneManager.WIDTH + 1250, Math.random() * 950);
-        platform1.scale.set(5, 2);
-        this.platforms.push(platform1);
-        this.world.addChild(platform1);
+            if (!this.goodWitch.isManaFull() || !this.goodWitch.isHealthFull()) {
+                const platform1 = new Platform();
+                platform1.position.set(SceneManager.WIDTH + 1250, Math.random() * 950);
+                platform1.scale.set(5, 2);
+                this.platforms.push(platform1);
+                this.world.addChild(platform1);
+            }
+        
 
         }
         
@@ -278,7 +291,15 @@ export class ThickerScene extends Container implements IUpdateable {
         this.platforms = this.platforms.filter((elem) => !elem.destroyed);
 
 
+        
+
+    // Si no hay plataformas, detén el fondo
+    if (this.platforms.length === 0) {
+        this.background.tilePosition.x = 0; // Detén el fondo
+    } else {
+        this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000;
+    }
         //this.world.x = -this.goodWitch.x * this.worldTransform.a + WIDTH / 7;
-        this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000; 
+        //this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000; 
     }
 }

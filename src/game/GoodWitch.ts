@@ -18,15 +18,15 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     public states: Map<string, AnimatedSprite> = new Map();
     private animContainer: Container = new Container();
     private maximumFallSpeed = 300;
-    private canDying = false;
+    /*private canDying = false;
     private isDying: boolean = false;
     private isAttacking = false;
-    private canAttack = true;
+    private canAttack = true;*/
     private mana:number;
     private manaMax:number;
     private health:number;
     private healthMax:number;
-    private coins:number;
+    //private coins:number;
 
     
 
@@ -42,12 +42,12 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.speed.x = 0;
         this.speed.y = 0;
         this.acceleration.y = GoodWitch.GRAVITY;
-        this.coins = 0;
+        //this.coins = 0;
 
         if (Keyboard.down) {
             Keyboard.down.on("Space", this.jump, this);
-            Keyboard.down.on("KeyQ", this.die, this);
-            Keyboard.down.on("KeyE", this.attack, this);
+            /*Keyboard.down.on("KeyQ", this.die, this);
+            Keyboard.down.on("KeyE", this.attack, this);*/
         }
 
 
@@ -73,13 +73,13 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     }
 
-    getCoins():number {
+    /*getCoins():number {
         return this.coins;
     }
 
     collectCoins(amount:number): void {
         this.coins = this.coins + amount;
-    }
+    }*/
 
     getMana():number {
         return this.mana;
@@ -105,12 +105,20 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.health = Math.min(this.health + amount, this.healthMax);
     }
 
+    isManaFull(): boolean {
+        return this.mana >= this.manaMax;
+    }
+
+    isHealthFull(): boolean {
+        return this.health >= this.healthMax;
+    }
+
     public override destroy(options: any) {
         super.destroy(options);
         
         Keyboard.down.off("Space", this.jump);
-        Keyboard.down.off("KeyQ", this.die);
-        Keyboard.down.off("KeyE", this.attack);
+        /*Keyboard.down.off("KeyQ", this.die);
+        Keyboard.down.off("KeyE", this.attack);*/
 
     }
 
@@ -146,14 +154,14 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             
         }
         
-        if (this.isDying) {
+        /*if (this.isDying) {
             this.playState("death", true, true);
             
             
             
-        }
+        }*/
 
-        if (this.isAttacking) {
+        /*if (this.isAttacking) {
            this.playState("attack", true, true); 
            
             
@@ -161,7 +169,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
             
         
-    }
+    }*/
 
 
         if (Keyboard.state.get("KeyS")) {
@@ -190,8 +198,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.speed.y = 0;
             this.canJump = true;
             this.isJumping = false;
-            this.canDying = true;
-            this.canAttack = true;
+            /*this.canDying = true;
+            this.canAttack = true;*/
             
         } else if (this.y < 0) {
             this.y = 0;
@@ -219,7 +227,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         }
     }
 
-    public die() {
+    /*public die() {
         if (this.canDying && !this.isDying) {
             this.speed.x = 0;
             this.speed.y = 0;
@@ -227,14 +235,14 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.canDying = false;
         }
         
-    }
+    }*/
 
-    public attack() {
+    /*public attack() {
        if (this.canAttack && !this.isAttacking) {
         this.canAttack = false;
         this.isAttacking = true;
        }
-    }
+    }*/
 
     public separate(overlap: Rectangle, platform: ObservablePoint<any>) {
         if (overlap.width < overlap.height) {
@@ -261,7 +269,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.y -= overlap.height;
             this.canJump = true;
             this.isJumping = false;
-            this.isAttacking = false;
+            //this.isAttacking = false;
             }
             
 
