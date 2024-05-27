@@ -28,26 +28,26 @@ export class ThickerScene extends Container implements IUpdateable {
     constructor() {
         super();
 
-
+        this.goodWitch = new GoodWitch();
         this.world = new Container();
         this.background = new TilingSprite(Texture.from("background1"), SceneManager.WIDTH, SceneManager.HEIGHT);
         this.addChild(this.background);
 
         this.platforms = [];
 
-        let platform1 = new Platform();
+        let platform1 = new Platform(this.goodWitch);
         platform1.position.set(450, 750);
         platform1.scale.set(5, 2);
         this.platforms.push(platform1);
         this.world.addChild(platform1);
 
-        platform1 = new Platform();
+        platform1 = new Platform(this.goodWitch);
         platform1.position.set(1200, 750);
         platform1.scale.set(5, 2);
         this.platforms.push(platform1);
         this.world.addChild(platform1);
         
-        platform1 = new Platform();
+        platform1 = new Platform(this.goodWitch);
         platform1.position.set(1800, 750);
         platform1.scale.set(5, 2);
         this.platforms.push(platform1);
@@ -70,7 +70,7 @@ export class ThickerScene extends Container implements IUpdateable {
 
         
 
-        this.goodWitch = new GoodWitch();
+        
 
         this.goodWitch.x = 50;
         this.goodWitch.y = 50;
@@ -276,7 +276,7 @@ export class ThickerScene extends Container implements IUpdateable {
             this.timePassed = 0;
         
             if (!this.goodWitch.isManaFull() || !this.goodWitch.isHealthFull()) {
-                const platform1 = new Platform();
+                const platform1 = new Platform(this.goodWitch);
                 platform1.position.set(SceneManager.WIDTH + 1250, Math.random() * 950);
                 platform1.scale.set(5, 2);
                 this.platforms.push(platform1);
