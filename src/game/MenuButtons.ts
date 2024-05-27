@@ -5,7 +5,7 @@ import { SceneManager } from "../utils/SceneManager";
 
 export class MenuButtons extends Container {
 
-    //private startButton : Button;
+    
     private exitButton: Button;
      
     constructor () {
@@ -20,17 +20,6 @@ export class MenuButtons extends Container {
         this.exitButton.scale.set(1.5);
         this.exitButton.y = SceneManager.HEIGHT / 2;
         this.addChild(this.exitButton);
-
-        /*this.startButton = new Button(Texture.from("playDef"), 
-        Texture.from("playDown"), 
-        Texture.from("playOver"),
-        );
-        this.startButton.on("buttonClick", this.onButtonClick, this);
-        this.startButton.x = SceneManager.WIDTH / 2 + 75;
-        this.startButton.scale.set(1.5);
-        this.startButton.y = SceneManager.HEIGHT / 2;
-        this.addChild(this.startButton);*/
-        
     }
 
     private onButtonClick(): void {

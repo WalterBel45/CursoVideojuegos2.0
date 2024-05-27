@@ -17,8 +17,6 @@ export class MenuScene extends SceneBase implements IUpdateable {
     constructor() {
         super();
 
-        
-
         const background = new Sprite(Texture.from("background1"));
         this.addChild(background);
 
@@ -49,7 +47,6 @@ export class MenuScene extends SceneBase implements IUpdateable {
              Texture.from("idleAnimation10"),
              Texture.from("idleAnimation11"),
              Texture.from("idleAnimation12"),
-             /*Texture.from("idleAnimation13"),*/
             ], 0.2, 3, true
         );
         this.addChild(this.character);

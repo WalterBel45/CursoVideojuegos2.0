@@ -51,7 +51,6 @@ window.dispatchEvent(new Event("resize"));
 
 Ticker.shared.add(update);
 
-
     }
 
     export function changeScene(newScene:SceneBase) {

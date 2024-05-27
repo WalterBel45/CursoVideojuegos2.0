@@ -15,7 +15,6 @@ export class LoaderScene extends SceneBase {
         this.bar = new Graphics();
         this.setBarPercent(50);
         
-
         this.bar.x = SceneManager.WIDTH * 0.5;
         this.bar.y = SceneManager.HEIGHT * 0.5;
 

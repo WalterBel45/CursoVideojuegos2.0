@@ -1,7 +1,5 @@
 import { AnimatedSprite, Container, Graphics, ObservablePoint, Rectangle, Texture } from "pixi.js";
 import { PhysicsContainer } from "./PhysicsContainer";
-//import { HEIGHT, WIDTH } from "..";
-//import { Keyboard } from "../utils/keyboard";
 import { IHitbox } from "../utils/IHitbox";
 import { Keyboard } from "../utils/keyboard";
 import { SceneManager } from "../utils/SceneManager";
@@ -22,13 +20,13 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private isDying: boolean = false;
     private isAttacking = false;
     private canAttack = true;*/
-    private mana:number;
-    private manaMax:number;
-    private health:number;
-    private healthMax:number;
+    private mana: number;
+    private manaMax: number;
+    private health: number;
+    private healthMax: number;
     //private coins:number;
 
-    
+
 
 
     constructor() {
@@ -50,9 +48,6 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             Keyboard.down.on("KeyE", this.attack, this);*/
         }
 
-
-
-
         const auxZero = new Graphics();
         auxZero.beginFill(0xFF00FF);
         auxZero.drawCircle(0, 0, 10);
@@ -64,8 +59,6 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.hitbox.endFill();
         this.hitbox.x = -90;
         this.hitbox.y = -120;
-
-
 
         this.addChild(auxZero);
         this.addChild(this.hitbox);
@@ -81,41 +74,41 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.coins = this.coins + amount;
     }*/
 
-    getMana():number {
+    public getMana(): number {
         return this.mana;
     }
 
-    getManaMax(): number {
+    public getManaMax(): number {
         return this.manaMax;
     }
 
-    addMana(amount:number): void {
+    public addMana(amount: number): void {
         this.mana = Math.min(this.mana + amount, this.manaMax);
     }
 
-    getHealth(): number {
+    public getHealth(): number {
         return this.health;
     }
 
-    getHealthMax(): number {
+    public getHealthMax(): number {
         return this.healthMax;
     }
 
-    addHealth(amount:number): void {
+    public addHealth(amount: number): void {
         this.health = Math.min(this.health + amount, this.healthMax);
     }
 
-    isManaFull(): boolean {
+    public isManaFull(): boolean {
         return this.mana >= this.manaMax;
     }
 
-    isHealthFull(): boolean {
+    public isHealthFull(): boolean {
         return this.health >= this.healthMax;
     }
 
     public override destroy(options: any) {
         super.destroy(options);
-        
+
         Keyboard.down.off("Space", this.jump);
         /*Keyboard.down.off("KeyQ", this.die);
         Keyboard.down.off("KeyE", this.attack);*/
@@ -128,17 +121,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     public override update(deltaMS: number) {
         super.update(deltaMS / 1000);
-        
-
-        /*for (const state of this.states.values()) {
-            state.update(deltaMS / (1000 / 60));
-        }*/
-
         if (Keyboard.state.get("KeyD")) {
             this.speed.x = GoodWitch.MOVE_SPEED;
             this.scale.x = 1
             this.playState("run");
-            
         } else if (Keyboard.state.get("KeyA")) {
             this.speed.x = -GoodWitch.MOVE_SPEED;
             this.scale.x = -1
@@ -151,24 +137,14 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         if (this.isJumping) {
             this.playState("jump", true, true);
-            
+
         }
-        
+
         /*if (this.isDying) {
             this.playState("death", true, true);
-            
-            
-            
         }*/
-
         /*if (this.isAttacking) {
            this.playState("attack", true, true); 
-           
-            
-           
-
-            
-        
     }*/
 
 
@@ -178,19 +154,13 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         } else {
             this.acceleration.y = GoodWitch.GRAVITY;
-
         }
         
-
         if (this.x > SceneManager.WIDTH) {
             this.x = SceneManager.WIDTH;
 
-
-
         } else if (this.x < 0) {
             this.x = 0;
-
-
 
         }
         if (this.y > SceneManager.HEIGHT) {
@@ -198,9 +168,9 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.speed.y = 0;
             this.canJump = true;
             this.isJumping = false;
-            /*this.canDying = true;
+            /*this.canDie = true;
             this.canAttack = true;*/
-            
+
         } else if (this.y < 0) {
             this.y = 0;
             this.speed.y = 0;
@@ -209,9 +179,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         if (this.speed.y > this.maximumFallSpeed) {
             this.speed.y = this.maximumFallSpeed;
 
-        } 
-        
-
+        }
     }
 
     public jump() {
@@ -219,11 +187,6 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.isJumping = true;
             this.canJump = false;
             this.speed.y = -GoodWitch.JUMP_SPEED;
-            
-
-
-
-
         }
     }
 
@@ -251,37 +214,22 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
                 this.x += overlap.width;
             } else if (this.x < platform.x) {
                 this.x -= overlap.width;
-
             }
 
         } else {
-
             if (this.y > platform.y) {
-
                 this.y += overlap.height;
                 this.acceleration.y += GoodWitch.GRAVITY;
-                
-
 
             } else if (this.y < platform.y) {
                 this.acceleration.y = 0;
-            this.speed.y = 0;
-            this.y -= overlap.height;
-            this.canJump = true;
-            this.isJumping = false;
-            //this.isAttacking = false;
+                this.speed.y = 0;
+                this.y -= overlap.height;
+                this.canJump = true;
+                this.isJumping = false;
+                //this.isAttacking = false;
             }
-            
-
-
-
-
         }
-
-
-
-
-
     }
 
     public addState(stateName: string, frames: Texture[] | string[], animationSpeed: number, scale: number, loop: boolean) {
@@ -299,69 +247,44 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         tempAnimation.scale.set(scale);
         if (loop) {
             tempAnimation.loop = loop;
-        } 
-
-        
+        }
         tempAnimation.play();
-        
         tempAnimation.anchor.set(0.5, 1);
-
-    
-        
         this.states.set(stateName, tempAnimation);
     }
 
-    public playState(stateName: string, _restartAnim?:boolean, onlyOnce?:boolean) {
+    public playState(stateName: string, _restartAnim?: boolean, onlyOnce?: boolean) {
         this.animContainer.removeChildren();
         const currentState = this.states.get(stateName)
 
         if (currentState) {
             this.animContainer.addChild(currentState);
-            
-                
-                if (onlyOnce) {
 
-                    let executed = false;
-                    
-                    currentState.onLoop = () => {
-                        
-                        if (!executed) {
-                            currentState.stop();
-                            executed = true;
-                        } 
-                        
-                        
-                //currentState.gotoAndPlay(currentState.totalFrames);
-                            
-                      
-                        
-                    };
-                    executed = false;
-                    
-                } else  {
-                    currentState.play();
-                    
-                }
-            
-                
-                
-                
-               
-                
-                
-                
+
+            if (onlyOnce) {
+
+                let executed = false;
+
+                currentState.onLoop = () => {
+
+                    if (!executed) {
+                        currentState.stop();
+                        executed = true;
+                    }
+                };
+                executed = false;
+            } else {
+                currentState.play();
+
             }
-            
-            
-            }
-        
-            
         }
-            
+    }
+}
 
-            
-        
-    
+
+
+
+
 
 
 

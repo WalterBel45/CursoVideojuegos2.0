@@ -1,6 +1,9 @@
 import { Container, NineSlicePlane, Sprite, Text, Texture } from "pixi.js";
 import { Button } from "../ui/button";
 import { Keyboard } from "../utils/keyboard";
+import { SceneManager } from "../utils/SceneManager";
+import { MenuScene } from "./MenuScene";
+import { CoinsCounter } from "../game/CoinsCounter";
 
 export class UIDemo extends Container {
 
@@ -9,12 +12,14 @@ export class UIDemo extends Container {
     private buttonMouseSaveReply: Button;
     private buttonPlay: Button;
     private lastKeyPressed: Text;
+    private coinsCollected:CoinsCounter
 
     constructor() {
         super();
         const dialog = new Container();
         dialog.x = 100;
         dialog.y = 50;
+        this.coinsCollected = new CoinsCounter();
 
 
         // Creacion del fondo
@@ -56,7 +61,7 @@ export class UIDemo extends Container {
         Texture.from("playDown"), 
         Texture.from("playOver"),
         );
-        this.buttonPlay.on("buttonClick", this.onButtonClick, this);
+        this.buttonPlay.on("buttonClick", this.goToMenu, this);
         this.buttonPlay.x = this.buttonMouseSaveReply.x + 125;
         this.buttonPlay.y = this.buttonMouseClose.y - 25;
         this.buttonPlay.scale.set(1.5);
@@ -90,7 +95,7 @@ export class UIDemo extends Container {
         allStars.y = scorePanel.y + 60;
 
 
-        this.lastKeyPressed = new Text("Score : 100000", { fontSize: 30 });
+        this.lastKeyPressed = new Text(`Monedas: ${this.coinsCollected.getCoins()}`, { fontSize: 30 });
 
 
         const scorePanelvisual = new NineSlicePlane(Texture.from("scorePanel"), 35, 35, 35, 35);
@@ -139,5 +144,9 @@ export class UIDemo extends Container {
 
     private onKeyBUp() : void {
         console.log("solte la B", this);
+    }
+
+    private goToMenu(): void {
+        SceneManager.changeScene(new MenuScene());
     }
 }

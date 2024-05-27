@@ -7,6 +7,7 @@ import { ManaBar } from "../game/ManaBar";
 import { SceneManager } from "../utils/SceneManager";
 import { HealthBar } from "../game/HealthBar";
 import { CoinsCounter } from "../game/CoinsCounter";
+import { UIDemo } from "./UiDemo";
 
 
 
@@ -22,6 +23,7 @@ export class ThickerScene extends Container implements IUpdateable {
     private manaBar:ManaBar;
     private healthBar:HealthBar;
     private coinCounter:CoinsCounter;
+    private uiDemoScene:UIDemo;
 
     
 
@@ -53,25 +55,10 @@ export class ThickerScene extends Container implements IUpdateable {
         this.platforms.push(platform1);
         this.world.addChild(platform1);
         
-        /*platform1 = new Platform();
-        platform1.position.set(2000, 750);
-        platform1.scale.set(5, 2);
-        this.platforms.push(platform1);
-        this.world.addChild(platform1);*/
-
         
-
-        
-        
-        
-        
-
         this.addChild(this.world);
 
-        
-
-        
-
+    
         this.goodWitch.x = 50;
         this.goodWitch.y = 50;
         
@@ -126,11 +113,10 @@ export class ThickerScene extends Container implements IUpdateable {
          Texture.from("idleAnimation10"),
          Texture.from("idleAnimation11"),
          Texture.from("idleAnimation12"),
-         /*Texture.from("idleAnimation13"),*/
         ], 0.2, 3, true
     );
 
-        this.goodWitch.addState("death", [/*Texture.from("deathAnimation1"),*/
+        this.goodWitch.addState("death", [
         Texture.from("deathAnimation2"),
         Texture.from("deathAnimation3"),
         Texture.from("deathAnimation4"),
@@ -229,7 +215,7 @@ export class ThickerScene extends Container implements IUpdateable {
         this.coinCounter.position.set(1750, 10);
         this.addChild(this.coinCounter);
 
-
+        this.uiDemoScene = new UIDemo();
         
     }
 
@@ -238,7 +224,6 @@ export class ThickerScene extends Container implements IUpdateable {
         
         this.goodWitch.update(deltaTime);
 
-       
         this.timePassed += deltaTime;
 
         for (let platform of this.platforms) {
@@ -246,8 +231,6 @@ export class ThickerScene extends Container implements IUpdateable {
             platform.update(deltaTime/1000);
             const overlap = checkCollision(this.goodWitch, platform);
     
-            
-
             if (overlap != null) {
                 this.goodWitch.separate(overlap, platform.position);
                 
@@ -282,24 +265,21 @@ export class ThickerScene extends Container implements IUpdateable {
                 this.platforms.push(platform1);
                 this.world.addChild(platform1);
             }
-        
-
         }
         
-
-        }
+    }
         this.platforms = this.platforms.filter((elem) => !elem.destroyed);
 
-
-        
-
-    // Si no hay plataformas, detén el fondo
+    // Si no hay plataformas que se detenga el fondo
     if (this.platforms.length === 0) {
-        this.background.tilePosition.x = 0; // Detén el fondo
+        this.background.tilePosition.x = 0; 
+        this.background.addChild(this.uiDemoScene)
+        this.uiDemoScene.position.x = 350;
+        this.uiDemoScene.position.y = 100;
+
     } else {
         this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000;
     }
-        //this.world.x = -this.goodWitch.x * this.worldTransform.a + WIDTH / 7;
-        //this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000; 
+        
     }
 }

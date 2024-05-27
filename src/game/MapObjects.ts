@@ -15,7 +15,6 @@ export class MapObjects extends Container {
             sprite = Sprite.from("healthPot");
         } else if (type === "coin") {
             sprite = Sprite.from("coin");
-            
         } else {
             throw new Error("Unknown type: " + type);
         }
