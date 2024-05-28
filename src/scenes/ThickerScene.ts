@@ -249,6 +249,7 @@ export class ThickerScene extends Container implements IUpdateable {
                     //this.goodWitch.collectCoins(1);
                     this.coinCounter.addCoins(1);
                     this.gameSpeed += 20;
+                    this.deceleration += 0.0020;
                 }
             }
 

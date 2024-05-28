@@ -25,7 +25,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private health: number;
     private healthMax: number;
     //private coins:number;
-    private recentlyCollided: boolean;
+    //private recentlyCollided: boolean;
     
 
 
@@ -42,7 +42,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.speed.x = 0;
         this.speed.y = 0;
         this.acceleration.y = GoodWitch.GRAVITY;
-        this.recentlyCollided = false;
+        //this.recentlyCollided = false;
         //this.coins = 0;
 
         if (Keyboard.down) {
@@ -152,6 +152,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         }
 
+        if (this.health < 0) {
+            this.playState("death", false);
+        }
+
         /*if (this.isDying) {
             this.playState("death", true, true);
         }*/
@@ -168,15 +172,15 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.acceleration.y = GoodWitch.GRAVITY;
         }
         
-        if (this.x > SceneManager.WIDTH && !this.recentlyCollided) {
+        if (this.x > SceneManager.WIDTH /*&& !this.recentlyCollided*/) {
             this.x = SceneManager.WIDTH;
             this.reduceHealth(10);
-            this.setRecentlyCollided();
+            //this.setRecentlyCollided();
 
-        } else if (this.x < 0 && !this.recentlyCollided) {
+        } else if (this.x < 0 /*&& !this.recentlyCollided*/) {
             this.x = 0;
             this.reduceHealth(10);
-            this.setRecentlyCollided();
+            //this.setRecentlyCollided();
         }
         if (this.y > SceneManager.HEIGHT) {
             this.y = SceneManager.HEIGHT;
@@ -195,6 +199,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.speed.y = this.maximumFallSpeed;
 
         }
+
+        if (this.health < 0) {
+            this.playState("death", false);
+        }
     }
 
     public jump() {
@@ -204,6 +212,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.speed.y = -GoodWitch.JUMP_SPEED;
         }
     }
+
+    
 
     /*public die() {
         if (this.canDying && !this.isDying) {
@@ -294,12 +304,12 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             }
         }
     }
-    private setRecentlyCollided(): void {
+    /*private setRecentlyCollided(): void {
         this.recentlyCollided = true;
         setTimeout(() => {
             this.recentlyCollided = false;
-        }, 1000);
-    }
+        }, 0);
+    }*/
 }
 
 
