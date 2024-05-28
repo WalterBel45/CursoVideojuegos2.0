@@ -1,9 +1,9 @@
-import { Container, NineSlicePlane, Sprite, Text, Texture } from "pixi.js";
+import { Container, NineSlicePlane, Sprite, Texture } from "pixi.js";
 import { Button } from "../ui/button";
 import { Keyboard } from "../utils/keyboard";
 import { SceneManager } from "../utils/SceneManager";
 import { MenuScene } from "./MenuScene";
-import { CoinsCounter } from "../game/CoinsCounter";
+
 
 export class UIDemo extends Container {
 
@@ -11,16 +11,16 @@ export class UIDemo extends Container {
     private buttonMouseLeaderboard: Button;
     private buttonMouseSaveReply: Button;
     private buttonPlay: Button;
-    private lastKeyPressed: Text;
-    private coinsCollected:CoinsCounter
+    
+
+    
 
     constructor() {
         super();
         const dialog = new Container();
         dialog.x = 100;
         dialog.y = 50;
-        this.coinsCollected = new CoinsCounter();
-
+        
 
         // Creacion del fondo
         const background = new NineSlicePlane(Texture.from("panelBorder"), 35, 35, 35, 35);
@@ -95,22 +95,21 @@ export class UIDemo extends Container {
         allStars.y = scorePanel.y + 60;
 
 
-        this.lastKeyPressed = new Text(`Monedas: ${this.coinsCollected.getCoins()}`, { fontSize: 30 });
+        
 
 
         const scorePanelvisual = new NineSlicePlane(Texture.from("scorePanel"), 35, 35, 35, 35);
         scorePanelvisual.width = 400;
         scorePanelvisual.height = 100;
 
-        this.lastKeyPressed.x = scorePanelvisual.width / 2 - 100;
-        this.lastKeyPressed.y = scorePanelvisual.height / 2 - 15;
+        
 
         scorePanel.x = this.buttonMouseClose.x + 100;
         scorePanel.y = background.width / 2 + 60;
 
 
         scorePanel.addChild(scorePanelvisual);
-        scorePanel.addChild(this.lastKeyPressed);
+        
 
         // Teclado
         /*document.addEventListener("keydown", this.onKeyDown.bind(this));

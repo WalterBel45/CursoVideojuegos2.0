@@ -29,7 +29,7 @@ export class MapObjects extends Container {
             .start();
 
         this.hitbox = new Graphics();
-        this.hitbox.beginFill(0xFF00FF, 0.3);
+        this.hitbox.beginFill(0xFF00FF, 0.00001);
         this.hitbox.drawRect(-11, -15, 22, 40);
         this.hitbox.endFill();
         this.addChild(this.hitbox);

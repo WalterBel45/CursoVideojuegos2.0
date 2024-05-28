@@ -28,7 +28,7 @@ export class CoinsCounter extends Container {
         this.coinText.text = `Coins: ${this.coins}`;
     }
 
-    public getCoins() {
+    public getCoins(): number {
         return this.coins;
     }
 }

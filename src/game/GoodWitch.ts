@@ -25,6 +25,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     private health: number;
     private healthMax: number;
     //private coins:number;
+    private recentlyCollided: boolean;
+    
 
 
 
@@ -40,6 +42,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.speed.x = 0;
         this.speed.y = 0;
         this.acceleration.y = GoodWitch.GRAVITY;
+        this.recentlyCollided = false;
         //this.coins = 0;
 
         if (Keyboard.down) {
@@ -53,12 +56,17 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         auxZero.drawCircle(0, 0, 10);
         auxZero.endFill();
 
+       
+        
         this.hitbox = new Graphics();
-        this.hitbox.beginFill(0xFF00FF, 0.3);
+        this.hitbox.beginFill(0xFF00FF, 0.00001);
         this.hitbox.drawRect(0, 0, 125, 125);
         this.hitbox.endFill();
         this.hitbox.x = -90;
         this.hitbox.y = -120;
+
+        
+        
 
         this.addChild(auxZero);
         this.addChild(this.hitbox);
@@ -96,6 +104,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     public addHealth(amount: number): void {
         this.health = Math.min(this.health + amount, this.healthMax);
+    }
+
+    private reduceHealth(amount: number): void {
+        this.health = Math.max(this.health - amount, 0);  
     }
 
     public isManaFull(): boolean {
@@ -156,12 +168,15 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
             this.acceleration.y = GoodWitch.GRAVITY;
         }
         
-        if (this.x > SceneManager.WIDTH) {
+        if (this.x > SceneManager.WIDTH && !this.recentlyCollided) {
             this.x = SceneManager.WIDTH;
+            this.reduceHealth(10);
+            this.setRecentlyCollided();
 
-        } else if (this.x < 0) {
+        } else if (this.x < 0 && !this.recentlyCollided) {
             this.x = 0;
-
+            this.reduceHealth(10);
+            this.setRecentlyCollided();
         }
         if (this.y > SceneManager.HEIGHT) {
             this.y = SceneManager.HEIGHT;
@@ -278,6 +293,12 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
             }
         }
+    }
+    private setRecentlyCollided(): void {
+        this.recentlyCollided = true;
+        setTimeout(() => {
+            this.recentlyCollided = false;
+        }, 1000);
     }
 }
 

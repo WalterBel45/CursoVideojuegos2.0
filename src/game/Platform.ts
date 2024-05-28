@@ -17,7 +17,7 @@ export class Platform extends PhysicsContainer implements IHitbox {
         this.addChild(platform);
 
         this.hitbox = new Graphics();
-        this.hitbox.beginFill(0xFF00FF, 0.3);
+        this.hitbox.beginFill(0xFF00FF, 0.00001);
         this.hitbox.drawRect(0, 0, 80, 45);
         this.hitbox.endFill();
         this.addChild(this.hitbox);

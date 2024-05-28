@@ -24,7 +24,7 @@ export class ThickerScene extends Container implements IUpdateable {
     private healthBar:HealthBar;
     private coinCounter:CoinsCounter;
     private uiDemoScene:UIDemo;
-
+    private deceleration: number = 0.01;
     
 
     constructor() {
@@ -248,6 +248,7 @@ export class ThickerScene extends Container implements IUpdateable {
                 } else if (pot.getType() === "coin") {
                     //this.goodWitch.collectCoins(1);
                     this.coinCounter.addCoins(1);
+                    this.gameSpeed += 20;
                 }
             }
 
@@ -272,14 +273,22 @@ export class ThickerScene extends Container implements IUpdateable {
 
     // Si no hay plataformas que se detenga el fondo
     if (this.platforms.length === 0) {
-        this.background.tilePosition.x = 0; 
-        this.background.addChild(this.uiDemoScene)
-        this.uiDemoScene.position.x = 350;
-        this.uiDemoScene.position.y = 100;
+        if (this.gameSpeed > 0) {
+            this.gameSpeed -= this.deceleration * deltaTime;
+            if (this.gameSpeed < 0) {
+                this.gameSpeed = 0;
+            }
+        }
 
+        this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000;
+
+        if (this.gameSpeed === 0) {
+            this.background.addChild(this.uiDemoScene);
+            this.uiDemoScene.position.set(350, 100);
+        }
     } else {
         this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000;
     }
-        
-    }
+    this.healthBar.updateHealth(this.goodWitch.getHealth());
+}
 }
