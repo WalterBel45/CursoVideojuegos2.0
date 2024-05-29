@@ -28,7 +28,7 @@ export class Platform extends PhysicsContainer implements IHitbox {
             // Incrementar la probabilidad de healthPot
             if (rand < 0.66) {
                 this.pot = new MapObjects("healthPot");
-            } else if (rand < 0.5) {
+            } else if (rand > 0.66) {
                 this.pot = new MapObjects("coin");
             } else {
                 this.pot = null;
@@ -37,7 +37,7 @@ export class Platform extends PhysicsContainer implements IHitbox {
             // Incrementar la probabilidad de manaPot
             if (rand < 0.66) {
                 this.pot = new MapObjects("manaPot");
-            } else if (rand < 0.5) {
+            } else if (rand > 0.66) {
                 this.pot = new MapObjects("coin");
             } else {
                 this.pot = null;
