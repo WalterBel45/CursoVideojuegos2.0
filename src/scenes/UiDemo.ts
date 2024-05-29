@@ -1,4 +1,4 @@
-import { Container, NineSlicePlane, Sprite, Texture } from "pixi.js";
+import { Container, NineSlicePlane, Sprite, Texture, Text, TextStyle } from "pixi.js";
 import { Button } from "../ui/button";
 import { Keyboard } from "../utils/keyboard";
 import { SceneManager } from "../utils/SceneManager";
@@ -11,6 +11,7 @@ export class UIDemo extends Container {
     private buttonMouseLeaderboard: Button;
     private buttonMouseSaveReply: Button;
     private buttonPlay: Button;
+    private scoreText: Text;
     
 
     
@@ -102,6 +103,17 @@ export class UIDemo extends Container {
         scorePanelvisual.width = 400;
         scorePanelvisual.height = 100;
 
+        const textStyle = new TextStyle({
+            fontFamily: 'Arial',
+            fontSize: 36,
+            fill: '#000000',
+            align: 'center'
+        });
+
+        this.scoreText = new Text('', textStyle);
+        this.scoreText.x = scorePanelvisual.width / 2 - 125;
+        this.scoreText.y = scorePanelvisual.height / 2 - 25;
+        scorePanelvisual.addChild(this.scoreText);
         
 
         scorePanel.x = this.buttonMouseClose.x + 100;
@@ -114,6 +126,7 @@ export class UIDemo extends Container {
         // Teclado
         /*document.addEventListener("keydown", this.onKeyDown.bind(this));
         document.addEventListener("keyup", this.onKeyUp.bind(this));*/
+        
 
         this.addChild(dialog, scorePanel, allStars);
 
@@ -133,6 +146,14 @@ export class UIDemo extends Container {
         console.log("key released!", e.code); 
     } */
     
+    public showLostMessage(): void {
+        this.scoreText.text = "Sorry, you lost!";
+    }
+
+    public showWinMessage(): void {
+        this.scoreText.text = "Congratulations!";
+    }
+
     private onButtonClick(): void {
         console.log("my new buttton clicked!", Keyboard.state.get("KeyA"), this);
     }

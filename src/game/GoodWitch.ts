@@ -3,6 +3,7 @@ import { PhysicsContainer } from "./PhysicsContainer";
 import { IHitbox } from "../utils/IHitbox";
 import { Keyboard } from "../utils/keyboard";
 import { SceneManager } from "../utils/SceneManager";
+import { SceneBase } from "../utils/SceneBase";
 
 export class GoodWitch extends PhysicsContainer implements IHitbox {
 
@@ -16,22 +17,23 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     public states: Map<string, AnimatedSprite> = new Map();
     private animContainer: Container = new Container();
     private maximumFallSpeed = 300;
-    /*private canDying = false;
+    //private canDying = false;
     private isDying: boolean = false;
-    private isAttacking = false;
-    private canAttack = true;*/
+    //private isAttacking = false;
+    //private canAttack = true;
     private mana: number;
     private manaMax: number;
     private health: number;
     private healthMax: number;
     //private coins:number;
     //private recentlyCollided: boolean;
+    private scene: SceneBase;
     
 
 
 
 
-    constructor() {
+    constructor(scene:SceneBase) {
         super();
 
         this.mana = 0;
@@ -44,7 +46,8 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         this.acceleration.y = GoodWitch.GRAVITY;
         //this.recentlyCollided = false;
         //this.coins = 0;
-
+        this.scene = scene;
+        
         if (Keyboard.down) {
             Keyboard.down.on("Space", this.jump, this);
             /*Keyboard.down.on("KeyQ", this.die, this);
@@ -52,7 +55,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
         }
 
         const auxZero = new Graphics();
-        auxZero.beginFill(0xFF00FF);
+        auxZero.beginFill(0xFF00FF, 0.00001);
         auxZero.drawCircle(0, 0, 10);
         auxZero.endFill();
 
@@ -107,7 +110,10 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
     }
 
     private reduceHealth(amount: number): void {
-        this.health = Math.max(this.health - amount, 0);  
+        this.health = Math.max(this.health - amount, 0); 
+        if (this.health === 0) {
+            this.die();
+        } 
     }
 
     public isManaFull(): boolean {
@@ -133,6 +139,9 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     public override update(deltaMS: number) {
         super.update(deltaMS / 1000);
+        if (this.isDying) {
+            return;
+        }
         if (Keyboard.state.get("KeyD")) {
             this.speed.x = GoodWitch.MOVE_SPEED;
             this.scale.x = 1
@@ -152,13 +161,6 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
         }
 
-        if (this.health < 0) {
-            this.playState("death", false);
-        }
-
-        /*if (this.isDying) {
-            this.playState("death", true, true);
-        }*/
         /*if (this.isAttacking) {
            this.playState("attack", true, true); 
     }*/
@@ -215,15 +217,20 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
     
 
-    /*public die() {
-        if (this.canDying && !this.isDying) {
-            this.speed.x = 0;
-            this.speed.y = 0;
-            this.isDying = true;
-            this.canDying = false;
-        }
+    private die(): void {
+        this.isDying = true;
+        this.playState("death", true, true);
+        this.stopGame();
         
-    }*/
+    }
+
+    private stopGame(): void {
+        this.speed.x = 0;
+        this.speed.y = 0;
+        this.acceleration.y = 0;
+        this.scene.stopGame();
+        
+    }
 
     /*public attack() {
        if (this.canAttack && !this.isAttacking) {
@@ -294,6 +301,7 @@ export class GoodWitch extends PhysicsContainer implements IHitbox {
 
                     if (!executed) {
                         currentState.stop();
+                        this.animContainer.removeChild(currentState)
                         executed = true;
                     }
                 };

@@ -1,4 +1,4 @@
-import {Sprite, Texture} from "pixi.js";
+import {Sprite, Texture, Text, TextStyle} from "pixi.js";
 import { MenuButtons } from "../game/MenuButtons";
 import { IUpdateable } from "../utils/IUpdateable";
 import { GoodWitch } from "../game/GoodWitch";
@@ -33,7 +33,7 @@ export class MenuScene extends SceneBase implements IUpdateable {
         startButton.y = SceneManager.HEIGHT / 2;
         this.addChild(startButton);
 
-        this.character = new GoodWitch();
+        this.character = new GoodWitch(this);
         this.character.addState("idle", [
             Texture.from("idleAnimation1"),
              Texture.from("idleAnimation2"),
@@ -55,6 +55,43 @@ export class MenuScene extends SceneBase implements IUpdateable {
         this.character.y = SceneManager.HEIGHT;
         this.character.speed.x = 0;
         this.character.speed.y = 0;
+
+        const style = new TextStyle({
+            dropShadow: true,
+            fill: "#751cb0",
+            fontFamily: "Comic Sans MS",
+            fontSize: 120,
+            fontVariant: "small-caps",
+            letterSpacing: -1,
+            miterLimit: 8,
+            stroke: "#0d1735",
+            strokeThickness: 10,
+            trim: true
+        });
+        const wickedTwinText = new Text('Wicked Twin', style);
+        
+        wickedTwinText.anchor.set(0.5, 0);
+        wickedTwinText.position.set(SceneManager.WIDTH / 2, 50); 
+        
+        //"The Orange Witch's Journey" con una fuente más pequeña
+        const style1 = new TextStyle({
+            dropShadow: true,
+            fill: "#b0641c",
+            fontFamily: "Comic Sans MS",
+            fontSize: 80,
+            fontVariant: "small-caps",
+            letterSpacing: -1,
+            miterLimit: 8,
+            stroke: "#0d1735",
+            strokeThickness: 10,
+            trim: true
+        });
+        const orangeWitchText = new Text('The Orange Witch\'s Journey', style1);
+        orangeWitchText.anchor.set(0.5, 0); 
+        orangeWitchText.position.set(SceneManager.WIDTH / 2, wickedTwinText.y + wickedTwinText.height + 10); 
+        
+        
+        this.addChild(wickedTwinText, orangeWitchText);
 
 
     

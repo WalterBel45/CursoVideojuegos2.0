@@ -1,4 +1,4 @@
-import { Container,Texture, TilingSprite } from "pixi.js";
+import { Container, Texture, TilingSprite } from "pixi.js";
 import { IUpdateable } from "../utils/IUpdateable";
 import { GoodWitch } from "../game/GoodWitch";
 import { Platform } from "../game/Platform";
@@ -8,6 +8,7 @@ import { SceneManager } from "../utils/SceneManager";
 import { HealthBar } from "../game/HealthBar";
 import { CoinsCounter } from "../game/CoinsCounter";
 import { UIDemo } from "./UiDemo";
+import { Easing, Tween } from "tweedle.js";
 
 
 
@@ -20,17 +21,17 @@ export class ThickerScene extends Container implements IUpdateable {
     private background: TilingSprite;
     private gameSpeed: number = 100;
     private timePassed: number = 0;
-    private manaBar:ManaBar;
-    private healthBar:HealthBar;
-    private coinCounter:CoinsCounter;
-    private uiDemoScene:UIDemo;
+    private manaBar: ManaBar;
+    private healthBar: HealthBar;
+    private coinCounter: CoinsCounter;
+    private uiDemoScene: UIDemo;
     private deceleration: number = 0.01;
-    
+
 
     constructor() {
         super();
 
-        this.goodWitch = new GoodWitch();
+        this.goodWitch = new GoodWitch(this);
         this.world = new Container();
         this.background = new TilingSprite(Texture.from("background1"), SceneManager.WIDTH, SceneManager.HEIGHT);
         this.addChild(this.background);
@@ -48,20 +49,20 @@ export class ThickerScene extends Container implements IUpdateable {
         platform1.scale.set(5, 2);
         this.platforms.push(platform1);
         this.world.addChild(platform1);
-        
+
         platform1 = new Platform(this.goodWitch);
         platform1.position.set(1800, 750);
         platform1.scale.set(5, 2);
         this.platforms.push(platform1);
         this.world.addChild(platform1);
-        
-        
+
+
         this.addChild(this.world);
 
-    
+
         this.goodWitch.x = 50;
         this.goodWitch.y = 50;
-        
+
         this.goodWitch.addState("run", [
             Texture.from("goodwitchrun1"),
             Texture.from("goodwitchrun2"),
@@ -80,7 +81,7 @@ export class ThickerScene extends Container implements IUpdateable {
             Texture.from("goodwitchrun15"),
             Texture.from("goodwitchrun16")
         ], 0.5, 3, true
-       );
+        );
 
         this.goodWitch.addState("jump", [Texture.from("jumpAnimation1"),
         Texture.from("jumpAnimation2"),
@@ -98,36 +99,37 @@ export class ThickerScene extends Container implements IUpdateable {
         Texture.from("jumpAnimation14"),
         Texture.from("jumpAnimation15"),
         ], 0.09, 3, false
-    );
+        );
 
-         this.goodWitch.addState("idle", [
-        Texture.from("idleAnimation1"),
-         Texture.from("idleAnimation2"),
-         Texture.from("idleAnimation3"),
-         Texture.from("idleAnimation4"),
-         Texture.from("idleAnimation5"),
-         Texture.from("idleAnimation6"),
-         Texture.from("idleAnimation7"),
-         Texture.from("idleAnimation8"),
-         Texture.from("idleAnimation9"),
-         Texture.from("idleAnimation10"),
-         Texture.from("idleAnimation11"),
-         Texture.from("idleAnimation12"),
+        this.goodWitch.addState("idle", [
+            Texture.from("idleAnimation1"),
+            Texture.from("idleAnimation2"),
+            Texture.from("idleAnimation3"),
+            Texture.from("idleAnimation4"),
+            Texture.from("idleAnimation5"),
+            Texture.from("idleAnimation6"),
+            Texture.from("idleAnimation7"),
+            Texture.from("idleAnimation8"),
+            Texture.from("idleAnimation9"),
+            Texture.from("idleAnimation10"),
+            Texture.from("idleAnimation11"),
+            Texture.from("idleAnimation12"),
         ], 0.2, 3, true
-    );
+        );
 
         this.goodWitch.addState("death", [
-        Texture.from("deathAnimation2"),
-        Texture.from("deathAnimation3"),
-        Texture.from("deathAnimation4"),
-        Texture.from("deathAnimation5"),
-        Texture.from("deathAnimation6"),
-        Texture.from("deathAnimation7"),
-        Texture.from("deathAnimation8"),
-        Texture.from("deathAnimation9"),
-        Texture.from("deathAnimation10"),
+            Texture.from("deathAnimation1"),
+            Texture.from("deathAnimation2"),
+            Texture.from("deathAnimation3"),
+            Texture.from("deathAnimation4"),
+            Texture.from("deathAnimation5"),
+            Texture.from("deathAnimation6"),
+            Texture.from("deathAnimation7"),
+            Texture.from("deathAnimation8"),
+            Texture.from("deathAnimation9"),
+            Texture.from("deathAnimation10"),
         ], 0.2, 3, false
-    )
+        )
 
         this.goodWitch.addState("attack", [Texture.from("attackAnimation1"),
         Texture.from("attackAnimation2"),
@@ -140,13 +142,13 @@ export class ThickerScene extends Container implements IUpdateable {
         Texture.from("attackAnimation9"),
         Texture.from("attackAnimation10"),
         ], 0.2, 3, false
-    ) 
+        )
 
-    
+
         this.world.addChild(this.goodWitch);
-         this.goodWitch.playState("idle");
-         
-         const manaBarFrames: Texture[] = [
+        this.goodWitch.playState("idle");
+
+        const manaBarFrames: Texture[] = [
             Texture.from("manabar1"),
             Texture.from("manabar2"),
             Texture.from("manabar3"),
@@ -187,10 +189,10 @@ export class ThickerScene extends Container implements IUpdateable {
             Texture.from("manabar38"),
             Texture.from("manabar39"),
             Texture.from("manabar40"),
-            Texture.from("manabar41"),  
+            Texture.from("manabar41"),
         ];
 
-        const healthBarFrames: Texture [] = [
+        const healthBarFrames: Texture[] = [
             Texture.from("healthBar0"),
             Texture.from("healthBar1"),
             Texture.from("healthBar2"),
@@ -204,11 +206,11 @@ export class ThickerScene extends Container implements IUpdateable {
         ]
 
         this.manaBar = new ManaBar(manaBarFrames, this.goodWitch.getManaMax());
-        this.manaBar.position.set(10, 10); 
+        this.manaBar.position.set(10, 10);
         this.addChild(this.manaBar);
 
         this.healthBar = new HealthBar(healthBarFrames, this.goodWitch.getHealthMax());
-        this.healthBar.position.set(10, 80); 
+        this.healthBar.position.set(10, 80);
         this.addChild(this.healthBar);
 
         this.coinCounter = new CoinsCounter();
@@ -216,26 +218,27 @@ export class ThickerScene extends Container implements IUpdateable {
         this.addChild(this.coinCounter);
 
         this.uiDemoScene = new UIDemo();
-        
+       
+
     }
 
 
     public update(deltaTime: number, _deltaFrame: number): void {
-        
+
         this.goodWitch.update(deltaTime);
 
         this.timePassed += deltaTime;
 
         for (let platform of this.platforms) {
             platform.speed.x = -this.gameSpeed;
-            platform.update(deltaTime/1000);
+            platform.update(deltaTime / 1000);
             const overlap = checkCollision(this.goodWitch, platform);
-    
+
             if (overlap != null) {
                 this.goodWitch.separate(overlap, platform.position);
-                
+
             }
-            
+
             const pot = platform.getManaPot();
             if (pot && checkCollision(this.goodWitch, pot)) {
                 platform.removeManaPot();
@@ -256,40 +259,60 @@ export class ThickerScene extends Container implements IUpdateable {
             if (platform.getHitbox().right < 0) {
                 platform.destroy();
             }
-        
-        if (this.timePassed > 4000) {
-            this.timePassed = 0;
-        
-            if (!this.goodWitch.isManaFull() || !this.goodWitch.isHealthFull()) {
-                const platform1 = new Platform(this.goodWitch);
-                platform1.position.set(SceneManager.WIDTH + 1250, Math.random() * 950);
-                platform1.scale.set(5, 2);
-                this.platforms.push(platform1);
-                this.world.addChild(platform1);
+
+            if (this.timePassed > 4000) {
+                this.timePassed = 0;
+
+                if (!this.goodWitch.isManaFull() || !this.goodWitch.isHealthFull()) {
+                    const platform1 = new Platform(this.goodWitch);
+                    platform1.position.set(SceneManager.WIDTH + 1250, Math.random() * 950);
+                    platform1.scale.set(5, 2);
+                    this.platforms.push(platform1);
+                    this.world.addChild(platform1);
+                }
             }
+
         }
-        
-    }
         this.platforms = this.platforms.filter((elem) => !elem.destroyed);
 
-    // Si no hay plataformas que se detenga el fondo
-    if (this.platforms.length === 0) {
-        if (this.gameSpeed > 0) {
-            this.gameSpeed -= this.deceleration * deltaTime;
-            if (this.gameSpeed < 0) {
-                this.gameSpeed = 0;
+        // Si no hay plataformas que se detenga el fondo
+        if (this.platforms.length === 0) {
+            if (this.gameSpeed > 0) {
+                this.gameSpeed -= this.deceleration * deltaTime;
+                if (this.gameSpeed < 0) {
+                    this.gameSpeed = 0;
+                }
             }
-        }
 
-        this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000;
+            this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000;
 
-        if (this.gameSpeed === 0) {
-            this.background.addChild(this.uiDemoScene);
-            this.uiDemoScene.position.set(350, 100);
+            if (this.gameSpeed === 0) {
+                this.uiDemoScene.showWinMessage();
+                this.world.addChild(this.uiDemoScene);
+                this.animateFromCenter(this.uiDemoScene, { x: 1.2, y: 1.2 }, 1000);
+            }
+        } else {
+            this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000;
         }
-    } else {
-        this.background.tilePosition.x -= this.gameSpeed * deltaTime / 1000;
+        this.healthBar.updateHealth(this.goodWitch.getHealth());
+
+
     }
-    this.healthBar.updateHealth(this.goodWitch.getHealth());
-}
+    public stopGame(): void {
+        this.gameSpeed = 0;
+
+        this.platforms.forEach(platform => {
+            platform.speed.x = 0;
+        });
+        this.uiDemoScene.showLostMessage();
+        this.world.addChild(this.uiDemoScene);
+        this.animateFromCenter(this.uiDemoScene, { x: 1.2, y: 1.2 }, 1000);
+
+    }
+    private animateFromCenter(target: Container, scale: { x: number, y: number }, duration: number): void {
+        target.position.set(160, 0.6); 
+        new Tween(target.scale).to({ x: scale.x, y: scale.y }, duration)
+            .easing(Easing.Elastic.Out)
+            .start();
+    }
 }
